@@ -50,7 +50,7 @@ for file in bin/*; do
     link "$source" "$destination"
 done
 
-for file in colors/*; do
-    destination="$HOME/.vim/colors/$file"
-    source=$PWD/$file
-    link "$source" "$destination"
+mkdir -p "$HOME/.vim/colors"
+cp "$PWD/colors/blackdust.vim" "$HOME/.vim/colors/blackdust.vim"
+cp "$PWD/colors/autumn2.vim" "$HOME/.vim/colors/autumn2.vim"
+
