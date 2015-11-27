@@ -299,7 +299,7 @@ let g:jedi#show_call_signatures = "2"
 Bundle 'desert256.vim'
 Bundle 'oceandeep'
 Bundle 'vim-scripts/xorium.vim'
-
+Bundle 'blackdust.vim'
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " If we just installed Vundle, install the bundles automatically
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -653,3 +653,4 @@ augroup BWCCreateDir
     autocmd!
     autocmd BufWritePre * :call s:MkNonExDir(expand('<afile>'), +expand('<abuf>'))
 augroup END
+colorscheme blackdust

@@ -50,3 +50,7 @@ for file in bin/*; do
     link "$source" "$destination"
 done
 
+for file in colors/*; do
+    destination="$HOME/.vim/colors/$file"
+    source=$PWD/$file
+    link "$source" "$destination"
