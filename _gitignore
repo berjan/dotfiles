@@ -1,5 +1,6 @@
 # Just some standard files/globs to ignore
 .DS_Store
+Thumbs.db
 
 *.pyc
 *.pyo
@@ -13,6 +14,7 @@
 /.tox/
 /.coverage
 *.py,cover
+*.orig
 
 cache/*
 .cache/*
@@ -32,5 +34,9 @@ htmlcov
 docs/_build/
 
 .ropeproject
+.idea
 
-
+# Ignore ctags
+/tags
+/.tags
+/.vs/
