@@ -546,14 +546,8 @@ let g:jedi#smart_auto_mappings = 0
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Really nice color schemes for 256 colors shell
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Bundle 'desert256.vim'
-Bundle 'oceandeep'
-Bundle 'vim-scripts/xorium.vim'
-Bundle 'blackdust.vim'
-
-Plug 'vim-scripts/desert256.vim'
-Plug 'vim-scripts/oceandeep'
 Plug 'vim-scripts/xorium.vim'
+
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Initialize Plug
@@ -919,9 +913,6 @@ augroup BWCCreateDir
     autocmd!
     autocmd BufWritePre * :call s:MkNonExDir(expand('<afile>'), +expand('<abuf>'))
 augroup END
-<<<<<<< HEAD
-colorscheme blackdust
-=======
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Save and restore the session
