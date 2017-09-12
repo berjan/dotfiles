@@ -11,6 +11,10 @@ filetype off
 " set relative vim line numbers on
 set relativenumber
 
+" use ";" as leader
+let mapleader=";"
+
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Install Plug if it's not installed
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -534,8 +538,8 @@ if python_version >= 205
 endif
 
 " I find buffer to be quite convenient, but tabs or splits are also an option
-let g:jedi#use_tabs_not_buffers = 0
-let g:jedi#use_splits_not_buffers = 1
+let g:jedi#use_tabs_not_buffers = 1
+let g:jedi#use_splits_not_buffers = 0
 
 " Shortcuts
 let g:jedi#goto_assignments_command = "<leader>g"
