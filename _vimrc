@@ -82,7 +82,10 @@ endif
 " Load and install the Plugs using Plug
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call plug#begin(expand('~/.vim/bundle'))
-
+" support for Django+
+Plug 'tweekmonster/django-plus.vim'
+" test auto formatting html files
+Plug 'Chiel92/vim-autoformat'
 " Plugin to autoswap files
 Plug 'gioele/vim-autoswap'
 " Super easy comment and uncomment. Do gc or gcc to comment or comment a line
