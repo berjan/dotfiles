@@ -75,9 +75,9 @@ endif
 " Load and install the Plugs using Plug
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call plug#begin(expand('~/.vim/bundle'))
-" Tree like file browser
-" Plug 'WoLpH/nerdtree', {'tag': 'patch-1'}
-Plug 'scrooloose/nerdtree'
+
+" Plugin to autoswap files
+Plug 'gioele/vim-autoswap'
 " A Git wrapper so awesome, it should be illegal
 Plug 'tpope/vim-fugitive'
 " Easier way to move around in Vim
@@ -98,7 +98,6 @@ endif
 Plug 'rizzatti/dash.vim'
 Plug 'vim-scripts/vim-coffee-script'
 Plug 'tshirtman/vim-cython'
-Plug 'robbles/logstash.vim'
 " Bundle 'clickable.vim'
 
 " Javascript/html indending

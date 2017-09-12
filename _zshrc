@@ -547,3 +547,4 @@ if [ -f ~/.fzf.zsh ]; then
     export FZF_DEFAULT_OPTS='--no-mouse'
 fi
 
+alias st="git status"
