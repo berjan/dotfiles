@@ -8,6 +8,9 @@ set background=dark
 " disable everything until we've loaded the bundles
 filetype off 
 
+" set relative vim line numbers on
+set relativenumber
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Install Plug if it's not installed
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -78,6 +81,8 @@ call plug#begin(expand('~/.vim/bundle'))
 
 " Plugin to autoswap files
 Plug 'gioele/vim-autoswap'
+" Super easy comment and uncomment. Do gc or gcc to comment or comment a line
+Plug 'tpope/vim-commentary'
 " A Git wrapper so awesome, it should be illegal
 Plug 'tpope/vim-fugitive'
 " Easier way to move around in Vim
