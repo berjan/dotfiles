@@ -548,3 +548,4 @@ if [ -f ~/.fzf.zsh ]; then
 fi
 
 alias st="git status"
+alias br='git branch'

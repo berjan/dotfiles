@@ -82,8 +82,11 @@ endif
 " Load and install the Plugs using Plug
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call plug#begin(expand('~/.vim/bundle'))
+" adding ocean theme
+Plug 'mhartington/oceanic-next'
 " support for Django+
 Plug 'tweekmonster/django-plus.vim'
+Plug 'dkprice/vim-easygrep'
 " test auto formatting html files
 Plug 'Chiel92/vim-autoformat'
 " Plugin to autoswap files
@@ -157,7 +160,7 @@ if isdirectory('/usr/local/opt/fzf') || isdirectory(expand('~/.fzf'))
 
     " This is the default extra key bindings
     let g:fzf_action = {
-        \ 'enter': 'rightbelow split',
+        \ 'enter': 'rightbelow vsplit',
         \ 'ctrl-t': 'tab split',
         \ 'ctrl-x': 'rightbelow split',
         \ 'ctrl-v': 'rightbelow vsplit' }
@@ -997,3 +1000,14 @@ augroup myvimrc
     au!
     au BufWritePost .vimrc,_vimrc,vimrc,.gvimrc,_gvimrc,gvimrc so $MYVIMRC | if has('gui_running') | so $MYGVIMRC | endif
 augroup END
+" For Neovim 0.1.3 and 0.1.4
+let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+
+" Or if you have Neovim >= 0.1.5
+if (has("termguicolors"))
+ set termguicolors
+endif
+
+" Theme
+syntax enable
+colorscheme OceanicNext
