@@ -1,0 +1,34 @@
+grouped_session	archief_tudelft-20180221160701	archief_tudelft	:	:0
+pane	10	0	:zsh	1	:*	0	:/Users/B/dotfiles/_tmux/plugins	1	zsh	:-zsh
+pane	11	0	:zsh	1	:*	0	:/Users/B	1	zsh	:-zsh
+pane	archief_tudelft	0	:root@198:/srv/tu3/src	1	:*	0	:/Users/B/workspace/archief_tudelft	1	zsh	:-zsh
+pane	archief_tudelft	0	:root@198:/srv/tu3/src	1	:*	1	:/Users/B/workspace/archief_tudelft	0	zsh	:-zsh
+pane	archief_tudelft	0	:root@198:/srv/tu3/src	1	:*	2	:/Users/B/workspace/archief_tudelft	0	zsh	:-zsh
+pane	archief_tudelft	0	:root@198:/srv/tu3/src	1	:*	3	:/Users/B	0	zsh	:-zsh
+pane	archief_tudelft	0	:root@198:/srv/tu3/src	1	:*	4	:/Users/B/workspace/archief_tudelft	0	zsh	:-zsh
+pane	auto_trileitje	0	:zsh	1	:*	0	:/Users/B/Documents/sync_projects/auto_trileitje	0	bash	:-zsh
+pane	auto_trileitje	0	:zsh	1	:*	1	:/Users/B/Documents/sync_projects/auto_trileitje	1	zsh	:-zsh
+pane	medspaarpot	0	:zsh	1	:*	0	:/Users/B/Documents/sync_projects/medspaarpot/spaarpot	1	zsh	:-zsh
+pane	medspaarpot	0	:zsh	1	:*	1	:/Users/B/Documents/sync_projects/medspaarpot/spaarpot	0	python2.7	:-zsh
+pane	medspaarpot	0	:zsh	1	:*	2	:/Users/B/Documents/sync_projects/medspaarpot/spaarpot/spaarpot	0	zsh	:-zsh
+pane	oger	0	:	1	:*	0	:/Users/B/workspace/oger/oger/oger/apps	1	zsh	:-zsh
+pane	oger	0	:	1	:*	1	:/Users/B/workspace/oger/oger	0	zsh	:-zsh
+pane	oger	0	:	1	:*	2	:/Users/B/workspace/oger	0	zsh	:-zsh
+pane	python-bol-api	0	:zsh	1	:*	0	:/Users/B/workspace/python-bol-api	1	zsh	:-zsh
+pane	sales	0	:bash	1	:*	0	:/Users/B/workspace/sales	1	bash	:-zsh
+pane	sales	0	:bash	1	:*	1	:/Users/B/workspace/sales	0	Python	:-zsh
+pane	sales	1	:zsh	0	:-	0	:/Users/B/workspace/sales	1	zsh	:-zsh
+pane	status	0	:zsh	1	:*	0	:/Users/B/Documents/sync_projects/status	1	zsh	:-zsh
+pane	wptrilei	0	:zsh	1	:*	0	:/Users/B/workspace/wptrilei	1	zsh	:-zsh
+window	10	0	1	:*	6c20,425x98,0,0,30
+window	11	0	1	:*	6c24,425x98,0,0,34
+window	archief_tudelft	0	1	:*	e67d,425x98,0,0[425x54,0,0{212x54,0,0,0,212x54,213,0,3},425x43,0,55{212x43,0,55[212x39,0,55,1,212x3,0,95,20],212x43,213,55,19}]
+window	auto_trileitje	0	1	:*	624d,425x98,0,0[425x79,0,0,12,425x18,0,80,13]
+window	medspaarpot	0	1	:*	b35d,425x98,0,0[425x79,0,0,21,425x18,0,80{212x18,0,80,22,212x18,213,80,23}]
+window	oger	0	1	:*	6371,425x98,0,0[425x79,0,0,16,425x18,0,80{212x18,0,80,17,212x18,213,80,18}]
+window	python-bol-api	0	1	:*	d7e3,425x98,0,0,6
+window	sales	0	1	:*	e438,425x98,0,0[425x64,0,0,4,425x33,0,65,5]
+window	sales	1	0	:-	d7e4,425x98,0,0,7
+window	status	0	1	:*	6c24,425x98,0,0,15
+window	wptrilei	0	1	:*	6c20,425x98,0,0,11
+state	archief_tudelft-20180221160701	

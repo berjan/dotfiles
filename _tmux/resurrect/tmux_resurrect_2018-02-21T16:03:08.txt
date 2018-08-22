@@ -1,0 +1,32 @@
+grouped_session	archief_tudelft-20180219144307	archief_tudelft	:	:0
+pane	10	0	:zsh	1	:*	0	:/Users/B/dotfiles/_tmux/plugins	1	zsh	:-zsh
+pane	archief_tudelft	0	:root@198:/srv/tu3/src	1	:*	0	:/Users/B/workspace/archief_tudelft	1	bash	:-zsh
+pane	archief_tudelft	0	:root@198:/srv/tu3/src	1	:*	1	:/Users/B/workspace/archief_tudelft	0	zsh	:-zsh
+pane	archief_tudelft	0	:root@198:/srv/tu3/src	1	:*	2	:/Users/B/workspace/archief_tudelft	0	zsh	:-zsh
+pane	archief_tudelft	0	:root@198:/srv/tu3/src	1	:*	3	:/Users/B	0	zsh	:-zsh
+pane	archief_tudelft	0	:root@198:/srv/tu3/src	1	:*	4	:/Users/B/workspace/archief_tudelft	0	zsh	:-zsh
+pane	auto_trileitje	0	:zsh	1	:*	0	:/Users/B/Documents/sync_projects/auto_trileitje	0	bash	:-zsh
+pane	auto_trileitje	0	:zsh	1	:*	1	:/Users/B/Documents/sync_projects/auto_trileitje	1	zsh	:-zsh
+pane	medspaarpot	0	:zsh	1	:*	0	:/Users/B/Documents/sync_projects/medspaarpot/spaarpot	1	zsh	:-zsh
+pane	medspaarpot	0	:zsh	1	:*	1	:/Users/B/Documents/sync_projects/medspaarpot/spaarpot	0	python2.7	:-zsh
+pane	medspaarpot	0	:zsh	1	:*	2	:/Users/B/Documents/sync_projects/medspaarpot/spaarpot/spaarpot	0	zsh	:-zsh
+pane	oger	0	:	1	:*	0	:/Users/B/workspace/oger/oger/oger/apps	1	zsh	:-zsh
+pane	oger	0	:	1	:*	1	:/Users/B/workspace/oger/oger	0	zsh	:-zsh
+pane	oger	0	:	1	:*	2	:/Users/B/workspace/oger	0	zsh	:-zsh
+pane	python-bol-api	0	:zsh	1	:*	0	:/Users/B/workspace/python-bol-api	1	zsh	:-zsh
+pane	sales	0	:bash	1	:*	0	:/Users/B/workspace/sales	1	bash	:-zsh
+pane	sales	0	:bash	1	:*	1	:/Users/B/workspace/sales	0	Python	:-zsh
+pane	sales	1	:zsh	0	:-	0	:/Users/B/workspace/sales	1	zsh	:-zsh
+pane	status	0	:zsh	1	:*	0	:/Users/B/Documents/sync_projects/status	1	zsh	:-zsh
+pane	wptrilei	0	:zsh	1	:*	0	:/Users/B/workspace/wptrilei	1	zsh	:-zsh
+window	10	0	1	:*	6820,425x96,0,0,30
+window	archief_tudelft	0	1	:*	6a7e,425x96,0,0[425x65,0,0{212x65,0,0,0,212x65,213,0,3},425x30,0,66{212x30,0,66[212x15,0,66,1,212x14,0,82,20],212x30,213,66,19}]
+window	auto_trileitje	0	1	:*	67cd,425x96,0,0[425x78,0,0,12,425x17,0,79,13]
+window	medspaarpot	0	1	:*	2f2e,425x96,0,0[425x78,0,0,21,425x17,0,79{212x17,0,79,22,212x17,213,79,23}]
+window	oger	0	1	:*	df41,425x96,0,0[425x78,0,0,16,425x17,0,79{212x17,0,79,17,212x17,213,79,18}]
+window	python-bol-api	0	1	:*	cfe3,425x96,0,0,6
+window	sales	0	1	:*	bb36,425x96,0,0[425x63,0,0,4,425x32,0,64,5]
+window	sales	1	0	:-	cfe4,425x96,0,0,7
+window	status	0	1	:*	6824,425x96,0,0,15
+window	wptrilei	0	1	:*	6c20,425x98,0,0,11
+state	10	

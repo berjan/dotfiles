@@ -1,0 +1,22 @@
+grouped_session	diederik-20180714114211	diederik	:	:0
+grouped_session	sales	sales-20180712095611	:	:0
+grouped_session	status-20180717081750	status	:1	:0
+grouped_session	voetbabbel-20180716163459	voetbabbel	:1	:0
+pane	diederik	0	:zsh	1	:*	0	:/Users/B/workspace/diederik/survey	1	zsh	:-zsh
+pane	diederik	0	:zsh	1	:*	1	:/Users/B/workspace/diederik/survey	0	zsh	:-zsh
+pane	diederik	0	:zsh	1	:*	2	:/Users/B/workspace/diederik/survey	0	zsh	:-zsh
+pane	sales-20180712095611	0	:zsh	1	:*	0	:/Users/B/workspace/sales	1	zsh	:-zsh
+pane	servers	0	:zsh	1	:*	0	:/Users/B	1	zsh	:-zsh
+pane	status	0	:bash	0	:-	0	:/Users/B/Documents/sync_projects/status	1	bash	:-zsh
+pane	status	0	:bash	0	:-	1	:/Users/B/Documents/sync_projects/status	0	zsh	:-zsh
+pane	status	1	:zsh	1	:*	0	:/Users/B/Documents/sync_projects/status	1	zsh	:-zsh
+pane	voetbabbel	0	:zsh	1	:*	0	:/Users/Bair1/virtualenvs/voetbabbel/voetbabbel	1	zsh	:-zsh
+pane	voetbabbel	1	:zsh	0	:	0	:/Users/B/workspace/archief_tudelft/provisioning	1	zsh	:-zsh
+window	diederik	0	1	:*	5de8,284x101,0,0[284x50,0,0,1,284x50,0,51{142x50,0,51,2,141x50,143,51,5}]
+window	sales-20180712095611	0	1	:*	446f,284x101,0,0,10
+window	servers	0	1	:*	c244,151x55,0,0,7
+window	status	0	0	:-	87a7,206x72,0,0[206x60,0,0,14,206x11,0,61,17]
+window	status	1	1	:*	5e04,206x72,0,0,15
+window	voetbabbel	0	1	:*	d83d,364x98,0,0,0
+window	voetbabbel	1	0	:	d845,364x98,0,0,8
+state	status-20180717081750	

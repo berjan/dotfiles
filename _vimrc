@@ -13,6 +13,7 @@ set relativenumber
 
 " use ";" as leader
 let mapleader=";"
+nnoremap <C-b> <C-a>
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
