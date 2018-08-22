@@ -13,7 +13,16 @@ set relativenumber
 
 " use ";" as leader
 let mapleader=";"
+
+"""""""""""""""""""""""""""""""""""
+" personal mappings
+" 
+" increase number
 nnoremap <C-b> <C-a>
+nmap ff o<Esc>
+
+
+
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
