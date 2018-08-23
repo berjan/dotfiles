@@ -1,6 +1,10 @@
 # vim: ft=zsh
 
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+
 os=$(uname)
+
 
 # Fixing OS X Path annoyances
 # if [ -x /usr/libexec/path_helper ]; then
