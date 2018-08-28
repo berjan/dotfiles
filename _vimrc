@@ -107,7 +107,7 @@ Plug 'Lokaltog/vim-easymotion'
 " Snipmate and requirements for TextMate snippets
 Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-repeat'
-
+Plug 'christoomey/vim-tmux-navigator'
 Plug 'lepture/vim-jinja'
 Plug 'thiderman/vim-supervisor'
 Plug 'evanmiller/nginx-vim-syntax'
