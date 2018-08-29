@@ -1019,3 +1019,10 @@ endif
 " Theme
 syntax enable
 colorscheme OceanicNext
+nnoremap Q :q<CR>
+nnoremap W :w<CR>
+nnoremap qw :wq<CR>
+nnoremap vv <C-w>v
+nnoremap ss <C-w>s
+nnoremap gs :Gstatus<CR>
+nnoremap cc :Git commit -a<CR>
