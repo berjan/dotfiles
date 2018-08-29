@@ -1026,3 +1026,4 @@ nnoremap vv <C-w>v
 nnoremap ss <C-w>s
 nnoremap gs :Gstatus<CR>
 nnoremap cc :Git commit -a<CR>
+nnoremap gp :Gpush<CR>
