@@ -91,6 +91,7 @@ endif
 call plug#begin(expand('~/.vim/bundle'))
 " adding ocean theme
 Plug 'mhartington/oceanic-next'
+Plug 'benmills/vimux'
 " support for Django+
 Plug 'tweekmonster/django-plus.vim'
 Plug 'dkprice/vim-easygrep'
@@ -1018,7 +1019,9 @@ endif
 
 " Theme
 syntax enable
+
 colorscheme OceanicNext
+" my shortcuts
 nnoremap Q :q<CR>
 nnoremap W :w<CR>
 nnoremap qq :wq<CR>
