@@ -555,7 +555,7 @@ alias st="git status"
 alias br='git branch'
 
 alias df="tmux attach || tmux new -s dotfiles 'nvim ~/dotfiles/_vimrc' \; \
- split-window -h 'nvim ~/dotfiles/_tmux.conf' \; \
+ 
 "
 powerstat() {
     b=$(system_profiler SPPowerDataType)

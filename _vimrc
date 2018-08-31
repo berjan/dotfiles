@@ -1027,7 +1027,7 @@ nnoremap W :w<CR>
 nnoremap qq :wq<CR>
 nnoremap vv <C-w>v
 nnoremap ss <C-w>s
-nnoremap ggs :Gstatus<CR>
-nnoremap ggc :Git commit -a<CR>
-nnoremap ggp :Gpush<CR>
-nnoremap ggl :Glog<CR>
+nnoremap gis :Gstatus<CR>
+nnoremap gic :Git commit -a<CR>
+nnoremap gip :Gpush<CR>
+nnoremap gil :Glog<CR>
