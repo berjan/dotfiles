@@ -553,8 +553,8 @@ if python_version >= 205
 endif
 
 " I find buffer to be quite convenient, but tabs or splits are also an option
-let g:jedi#use_tabs_not_buffers = 1
-let g:jedi#use_splits_not_buffers = 0
+let g:jedi#use_tabs_not_buffers = 0
+let g:jedi#use_splits_not_buffers = "right"
 
 " Shortcuts
 let g:jedi#goto_assignments_command = "<leader>g"
