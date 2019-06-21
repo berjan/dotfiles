@@ -91,6 +91,7 @@ endif
 call plug#begin(expand('~/.vim/bundle'))
 " adding ocean theme
 Plug 'mhartington/oceanic-next'
+Plug 'dsawardekar/wordpress.vim'
 Plug 'benmills/vimux'
 " support for Django+
 Plug 'tweekmonster/django-plus.vim'
