@@ -2,7 +2,7 @@
 
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
-
+export LDFLAGS="-L/opt/homebrew/opt/zlib/lib"
 os=$(uname)
 
 
@@ -103,7 +103,9 @@ if which pyenv &> /dev/null; then eval "$(pyenv init -)"; fi
 # antigen apply
 
 # $PATH changes are done in .zprofile
-export PATH="$PATH:~/bin:${ROOT_DIR}bin"
+export PATH="$PATH:~/bin:${ROOT_DIR}bin:/Users/berjanbruens/Library/Python/3.8/bin"
+export LDFLAGS="-L/opt/homebrew/opt/zlib/lib"
+export CPPFLAGS="-I/opt/homebrew/opt/zlib/include"
 
 # Prompts
 #export PS1="$(print '%{\e[0;91m%}%n%{\e[0m%}')$(print '%{\e[0;94m%}@%{\e[0m%}')$(print '%{\e[0;92m%}%m%{\e[0m%}')# "
@@ -493,10 +495,10 @@ if [ 1 -eq "$DEBUG" ]; then
     exec 2>&3 3>&-
 fi
 
-autoload bashcompinit
-bashcompinit
-autoload -Uz compinit
-compinit
+#autoload bashcompinit
+#bashcompinit
+#autoload -Uz compinit
+#compinit
 
 if [ -d "~/.zsh/plugins" ]; then
     for f in ~/.zsh/plugins/*; do
@@ -554,19 +556,7 @@ fi
 alias st="git status"
 alias br='git branch'
 
+#alias python="/usr/bin/python3"
 #alias df="tmux attach || tmux new -s dotfiles 'cd ~/dotfiles; nvim ~/dotfiles/_vimrc' \; \
- 
-"
-powerstat() {
-    b=$(system_profiler SPPowerDataType)
-    amp=$(echo "$b" | grep 'Amperage (mA):' | cut -d ':' -f 2 | xargs)
-    volt=$(echo "$b" | grep 'Voltage (mV):' | cut -d ':' -f 2 | xargs)
-    power=$(($amp * $volt / 1000))
-    echo "$b" | grep --color=never -A 1 'Battery Information:'
-    echo "$b" | grep --color=never -A 1 'Amperage (mA)'
-    echo "      Total Power (mW): $power"
-    echo ""
-    echo "$b" | grep --color=never -A 99 'AC Charger Information:'
-}
 
 

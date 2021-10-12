@@ -54,27 +54,29 @@ let g:plug_threads=64
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Make sure neovim doesn't use the virtualenv
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-if has("nvim")
-    if filereadable(expand('~/envs/neovim2/bin/python'))
-        let g:python_host_prog = expand('~/envs/neovim2/bin/python')
-    elseif filereadable('/usr/local/bin/python2')
-        let g:python_host_prog = '/usr/local/bin/python2'
-    elseif filereadable('/usr/bin/python2')
-        let g:python_host_prog = '/usr/bin/python2'
-    else
-        echom "WARNING: no valid python2 install found"
-    endif
-
-    if filereadable(expand('~/envs/neovim3/bin/python'))
-        let g:python3_host_prog = expand('~/envs/neovim3/bin/python')
-    elseif filereadable('/usr/local/bin/python3')
-        let g:python3_host_prog = '/usr/local/bin/python3'
-    elseif filereadable('/usr/bin/python3')
-        let g:python3_host_prog = '/usr/bin/python3'
-    else
-        echom "WARNING: no valid python3 install found"
-    endif
-endif
+"if has("nvim")
+"    if filereadable(expand('~/envs/neovim2/bin/python'))
+"        let g:python_host_prog = expand('~/envs/neovim2/bin/python')
+"    elseif filereadable('/usr/local/bin/python2')
+"        let g:python_host_prog = '/usr/local/bin/python2'
+"    elseif filereadable('/usr/bin/python2')
+"        let g:python_host_prog = '/usr/bin/python2'
+"    else
+"        echom "WARNING: no valid python2 install found"
+"    endif
+"
+"    if filereadable(expand('~/envs/neovim3/bin/python'))
+"        let g:python3_host_prog = expand('~/envs/neovim3/bin/python')
+"    elseif filereadable('/usr/local/bin/python3')
+"        let g:python3_host_prog = '/usr/local/bin/python3'
+"    elseif filereadable('/usr/bin/python3')
+"        let g:python3_host_prog = '/usr/bin/python3'
+"    else
+"        echom "WARNING: no valid python3 install found"
+"    endif
+"endif
+"
+let g:python3_host_prog = '/opt/homebrew/bin/python3.9'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Check python version if available
@@ -116,10 +118,10 @@ Plug 'evanmiller/nginx-vim-syntax'
 Plug 'alfredodeza/coveragepy.vim'
 Plug 'alfredodeza/pytest.vim'
 Plug 'vim-scripts/pig.vim'
-if python_version >= 205
+" if python_version >= 205
     " Uses with_statement so python 2.5 or higher
-    Plug 'jmcantrell/vim-virtualenv'
-endif
+"    Plug 'jmcantrell/vim-virtualenv'
+" endif
 Plug 'rizzatti/dash.vim'
 Plug 'vim-scripts/vim-coffee-script'
 Plug 'tshirtman/vim-cython'
@@ -269,11 +271,7 @@ if has("nvim")
     Plug 'zchee/deoplete-jedi'
 
 	let g:deoplete#enable_at_startup = 1
-	let g:deoplete#auto_complete_start_length = 1
-	if !exists('g:deoplete#omni#input_patterns')
-  		let g:deoplete#omni#input_patterns = {}
-	endif
-	" let g:deoplete#disable_auto_complete = 1
+
 	autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 
 	" omnifuncs
@@ -549,10 +547,10 @@ endif
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Python Jedi plugin for better autocompletion
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-if python_version >= 205
-    Plug 'davidhalter/jedi-vim'
-endif
+"if python_version >= 205
+"endif
 
+Plug 'davidhalter/jedi-vim'
 " I find buffer to be quite convenient, but tabs or splits are also an option
 let g:jedi#use_tabs_not_buffers = 0
 let g:jedi#use_splits_not_buffers = "right"

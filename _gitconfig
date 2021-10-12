@@ -1,8 +1,8 @@
 [user]
-	name = Rick van Hattem
-	email = Wolph@wol.ph
+	name = Berjan Bruens
+	email = berjan@bruens.it
 [github]
-	user = WoLpH
+	user = berjan
 [alias]
     st = status
     ci = commit
