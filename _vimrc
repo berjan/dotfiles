@@ -109,15 +109,15 @@ Plug 'tpope/vim-fugitive'
 " Easier way to move around in Vim
 Plug 'Lokaltog/vim-easymotion'
 " Snipmate and requirements for TextMate snippets
-Plug 'tpope/vim-eunuch'
-Plug 'tpope/vim-repeat'
-Plug 'christoomey/vim-tmux-navigator'
-Plug 'lepture/vim-jinja'
-Plug 'thiderman/vim-supervisor'
-Plug 'evanmiller/nginx-vim-syntax'
-Plug 'alfredodeza/coveragepy.vim'
-Plug 'alfredodeza/pytest.vim'
-Plug 'vim-scripts/pig.vim'
+" Plug 'tpope/vim-eunuch'
+" Plug 'tpope/vim-repeat'
+" Plug 'christoomey/vim-tmux-navigator'
+" Plug 'lepture/vim-jinja'
+" Plug 'thiderman/vim-supervisor'
+" Plug 'evanmiller/nginx-vim-syntax'
+" Plug 'alfredodeza/coveragepy.vim'
+" Plug 'alfredodeza/pytest.vim'
+" Plug 'vim-scripts/pig.vim'
 " if python_version >= 205
     " Uses with_statement so python 2.5 or higher
 "    Plug 'jmcantrell/vim-virtualenv'
@@ -318,16 +318,16 @@ let g:gundo_verbose_graph=0
 
 Plug 'MarcWeber/vim-addon-mw-utils'
 Plug 'tomtom/tlib_vim'
-Plug 'garbas/vim-snipmate'
+" Plug 'garbas/vim-snipmate'
 
 " Lots of snippets
-Plug 'honza/vim-snippets'
+" Plug 'honza/vim-snippets'
 " snippets for BibTeX files
-Plug 'rbonvall/snipmate-snippets-bib'
+" Plug 'rbonvall/snipmate-snippets-bib'
 " snippets for Arduino files
-Plug 'sudar/vim-arduino-snippets'
+" Plug 'sudar/vim-arduino-snippets'
 " snippets for Twitter Bootstrap markup, in HTML and Haml
-Plug 'bonsaiben/bootstrap-snippets'
+" Plug 'bonsaiben/bootstrap-snippets'
 
 
 " Rainbow parenthesis
@@ -564,6 +564,7 @@ let g:jedi#completions_command = "<C-Space>"
 let g:jedi#rename_command = "<leader>r"
 let g:jedi#show_call_signatures = "2"
 let g:jedi#smart_auto_mappings = 0
+let g:jedi#environment_path = "venv"
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Really nice color schemes for 256 colors shell

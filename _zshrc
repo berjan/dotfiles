@@ -1,6 +1,5 @@
 # vim: ft=zsh
-
-export LC_ALL=en_US.UTF-8
+xport LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 export LDFLAGS="-L/opt/homebrew/opt/zlib/lib"
 os=$(uname)
@@ -177,7 +176,7 @@ alias push='git pull; git push'
 alias grep='grep --color=auto'
 test -x /usr/local/bin/hub && alias git=hub
 # Link vim to the OS X clipboard
-if [ -x /usr/local/bin/nvim ]; then
+if [ -x /opt/homebrew/bin/nvim ]; then
     alias vim="safe-reattach-to-user-namespace nvim"
     alias vimdiff="safe-reattach-to-user-namespace nvim -d"
 else
@@ -559,4 +558,4 @@ alias br='git branch'
 #alias python="/usr/bin/python3"
 #alias df="tmux attach || tmux new -s dotfiles 'cd ~/dotfiles; nvim ~/dotfiles/_vimrc' \; \
 
-
+path+=('/opt/homebrew/anaconda3/bin')
