@@ -76,7 +76,7 @@ let g:plug_threads=64
 "    endif
 "endif
 "
-let g:python3_host_prog = '/opt/homebrew/bin/python3.9'
+let g:python3_host_prog = '/usr/local/bin/python3.9'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Check python version if available
@@ -564,7 +564,6 @@ let g:jedi#completions_command = "<C-Space>"
 let g:jedi#rename_command = "<leader>r"
 let g:jedi#show_call_signatures = "2"
 let g:jedi#smart_auto_mappings = 0
-let g:jedi#environment_path = "venv"
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Really nice color schemes for 256 colors shell
