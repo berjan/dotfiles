@@ -16,7 +16,7 @@ If you are brave enough to give it a try, the install is fairly simple:
 
 ::
 
-    git clone https://github.com/berjan/dotfiles.git
+    git clone git@github.com:berjan/dotfiles.git
     cd dotfiles
     ./install.sh
 

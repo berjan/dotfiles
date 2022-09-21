@@ -76,7 +76,7 @@ let g:plug_threads=64
 "    endif
 "endif
 "
-let g:python3_host_prog = '/usr/local/bin/python3.9'
+let g:python3_host_prog = '/usr/local/bin/python'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Check python version if available
@@ -1030,3 +1030,15 @@ nnoremap gis :Gstatus<CR>
 nnoremap gic :Git commit -a<CR>
 nnoremap gip :Gpush<CR>
 nnoremap gil :Glog<CR>
+
+nnoremap <C-l> <C-w><C-l>
+nnoremap <C-h> <C-w><C-h>
+nnoremap <C-j> <C-w><C-j>
+nnoremap <C-k> <C-w><C-k>
+
+tnoremap <C-l> <C-\><C-n><C-w><C-l>
+tnoremap <C-h> <C-\><C-n><C-w><C-h>
+tnoremap <C-j> <C-\><C-n><C-w><C-j>
+tnoremap <C-k> <C-\><C-n><C-w><C-k>
+tnoremap <ESC> <C-\><C-n>
+
