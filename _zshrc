@@ -1,5 +1,5 @@
 # vim: ft=zsh
-xport LC_ALL=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 export LDFLAGS="-L/opt/homebrew/opt/zlib/lib"
 os=$(uname)
