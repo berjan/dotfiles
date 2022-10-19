@@ -11,6 +11,8 @@ filetype off
 " set relative vim line numbers on
 set relativenumber
 
+set cursorcolumn
+
 " use ";" as leader
 let mapleader=";"
 
