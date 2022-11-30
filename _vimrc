@@ -13,15 +13,6 @@ set relativenumber
 
 set cursorcolumn
 
-" use ";" as leader
-let mapleader=";"
-
-"""""""""""""""""""""""""""""""""""
-" personal mappings
-" 
-" increase number
-nnoremap <C-b> <C-a>
-nmap ff o<Esc>
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -47,47 +38,9 @@ if !filereadable(plugPath)
     let iCanHazPlug=0
 endif
 
-if has("win32")
-    source .vim\autoload\plug.vim
-endif
-
-let g:plug_threads=64
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Make sure neovim doesn't use the virtualenv
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"if has("nvim")
-"    if filereadable(expand('~/envs/neovim2/bin/python'))
-"        let g:python_host_prog = expand('~/envs/neovim2/bin/python')
-"    elseif filereadable('/usr/local/bin/python2')
-"        let g:python_host_prog = '/usr/local/bin/python2'
-"    elseif filereadable('/usr/bin/python2')
-"        let g:python_host_prog = '/usr/bin/python2'
-"    else
-"        echom "WARNING: no valid python2 install found"
-"    endif
-"
-"    if filereadable(expand('~/envs/neovim3/bin/python'))
-"        let g:python3_host_prog = expand('~/envs/neovim3/bin/python')
-"    elseif filereadable('/usr/local/bin/python3')
-"        let g:python3_host_prog = '/usr/local/bin/python3'
-"    elseif filereadable('/usr/bin/python3')
-"        let g:python3_host_prog = '/usr/bin/python3'
-"    else
-"        echom "WARNING: no valid python3 install found"
-"    endif
-"endif
 "
 let g:python3_host_prog = '/usr/local/bin/python'
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Check python version if available
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-if has("python")
-    python import vim; from sys import version_info as v; vim.command('let python_version=%d' % (v[0] * 100 + v[1]))
-else
-    let python_version=0
-endif
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Load and install the Plugs using Plug
@@ -95,8 +48,8 @@ endif
 call plug#begin(expand('~/.vim/bundle'))
 " adding ocean theme
 Plug 'mhartington/oceanic-next'
-Plug 'dsawardekar/wordpress.vim'
-Plug 'benmills/vimux'
+" Plug 'dsawardekar/wordpress.vim'
+" Plug 'benmills/vimux'
 " support for Django+
 Plug 'tweekmonster/django-plus.vim'
 Plug 'dkprice/vim-easygrep'
@@ -112,7 +65,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'Lokaltog/vim-easymotion'
 " Snipmate and requirements for TextMate snippets
 " Plug 'tpope/vim-eunuch'
-" Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-repeat'
 " Plug 'christoomey/vim-tmux-navigator'
 " Plug 'lepture/vim-jinja'
 " Plug 'thiderman/vim-supervisor'
@@ -133,24 +86,14 @@ Plug 'tshirtman/vim-cython'
 Plug 'pangloss/vim-javascript'
 Plug 'rstacruz/sparkup'
 
-Plug 'markcornick/vim-vagrant'
-if has('mac')
-    Plug 'vim-scripts/copy-as-rtf'
-endif
-Plug 'mikewest/vimroom'
 Plug 'guns/xterm-color-table.vim'
 
-Plug 'tfnico/vim-gradle'
 
-Plug 'zainin/vim-mikrotik'
 Plug 'Chiel92/vim-autoformat'
-Plug 'gorkunov/smartpairs.vim'
 Plug 'Vimjas/vim-python-pep8-indent'
 Plug 'AndrewRadev/linediff.vim'
 
-if has("nvim")
-    Plug 'sbdchd/neoformat'
-endif
+Plug 'sbdchd/neoformat'
 
 " Json stuff
 Plug 'Shougo/unite.vim'
@@ -160,117 +103,12 @@ Plug 'Quramy/vison'
 map <leader>i :Isort<cr>
 command! -range=% Isort :<line1>,<line2>! isort -
 
-if isdirectory('/usr/local/opt/fzf') || isdirectory(expand('~/.fzf'))
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Fuzzy finder (fzf)
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    if isdirectory('/usr/local/opt/fzf')
-        Plug '/usr/local/opt/fzf'
-    else
-        Plug expand('~/.fzf')
-    endif
-
-    Plug 'junegunn/fzf.vim'
-
-    " This is the default extra key bindings
-    let g:fzf_action = {
-        \ 'enter': 'rightbelow vsplit',
-        \ 'ctrl-t': 'tab split',
-        \ 'ctrl-x': 'rightbelow split',
-        \ 'ctrl-v': 'rightbelow vsplit' }
-
-    let g:fzf_command_prefix = ''
-
-    " [Tags] Command to generate tags file
-    " let g:fzf_tags_command = 'ctags -R'
-    " let g:fzf_tags_command = 'ctags -R $VIRTUAL_ENV/lib/python2.7/site-packages $VIRTUAL_ENV/lib/python3.4/site-packages $VIRTUAL_ENV/lib/python3.5/site-packages $VIRTUAL_ENV/lib/python3.6/site-packages ${PWD}'
-    let g:fzf_tags_command = 'ctags -R --fields=+l --languages=python --python-kinds=-iv -f ./.tags $(python -c "import os, sys; print('' ''.join(''{}''.format(d) for d in sys.path if os.path.isdir(d)))")'
-
-    " Default fzf layout
-    " - down / up / left / right
-    let g:fzf_layout = { 'down': '~70%' }
-
-    " In Neovim, you can set up fzf window using a Vim command
-    let g:fzf_layout = { 'window': 'enew' }
-    let g:fzf_layout = { 'window': '-tabnew' }
-
-    " Customize fzf colors to match your color scheme
-    let g:fzf_colors =
-        \ {'fg':      ['fg', 'Normal'],
-         \ 'bg':      ['bg', 'Normal'],
-         \ 'hl':      ['fg', 'Comment'],
-         \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-         \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-         \ 'hl+':     ['fg', 'Statement'],
-         \ 'info':    ['fg', 'PreProc'],
-         \ 'prompt':  ['fg', 'Conditional'],
-         \ 'pointer': ['fg', 'Exception'],
-         \ 'marker':  ['fg', 'Keyword'],
-         \ 'spinner': ['fg', 'Label'],
-         \ 'header':  ['fg', 'Comment'] }
-
-    " Enable per-command history.
-    " CTRL-N and CTRL-P will be automatically bound to next-history and
-    " previous-history instead of down and up. If you don't like the change,
-    " explicitly bind the keys to down and up in your $FZF_DEFAULT_OPTS.
-    let g:fzf_history_dir = '~/.local/share/fzf-history'
-
-    " [Files] Extra options for fzf
-    "   e.g. File preview using Highlight
-    "        (http://www.andre-simon.de/doku/highlight/en/highlight.html)
-    let g:fzf_files_options =
-    \ '--preview "(highlight -O ansi {} || cat {}) 2> /dev/null | head -'.&lines.'"'
-
-    " [Buffers] Jump to the existing window if possible
-    let g:fzf_buffers_jump = 1
-
-    " [[B]Commits] Customize the options used by 'git log':
-    let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
-
-    " [Tags] Command to generate tags file
-    let g:fzf_tags_command = 'ctags -R'
-
-    " [Commands] --expect expression for directly executing the command
-    let g:fzf_commands_expect = 'alt-enter,ctrl-x'
-
-    nmap <c-t> :FZF<cr>
-    imap <c-x><c-o> <plug>(fzf-complete-line)
-    map <leader>b :Buffers<cr>
-    map <leader>f :Files<cr>
-    map <leader>g :GFiles<cr>
-    map <leader>t :Tags<cr>
-else
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" CtrlP is a plugin to quickly open files
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-    Plug 'kien/ctrlp.vim'
-
-    " Change mapping since I prefer ^t
-    let g:ctrlp_map = '<c-t>'
-endif
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Enhanced diffs
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-if has("nvim") || exists("*systemlist")
-    Plug 'chrisbra/vim-diff-enhanced'
-    let &diffexpr='EnhancedDiff#Diff("git diff", "--diff-algorithm=patience")'
-endif
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" YouCompleteMe
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" if has("nvim")
-"     Plug 'Valloric/YouCompleteMe'
-"     let g:ycm_path_to_python_interpreter = '/usr/local/bin/python2'
-" endif
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Deoplete autocompleter 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 if has("nvim")
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-    Plug 'zchee/deoplete-jedi'
 
 	let g:deoplete#enable_at_startup = 1
 
@@ -298,13 +136,9 @@ if has("nvim")
 	autocmd FileType javascript nnoremap <silent> <buffer> gb :TernDef<CR>
 endif
 
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Ansible Vim syntax
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Plug 'chase/vim-ansible-yaml'
-let g:ansible_options = {'ignore_blank_lines': 0}
-let g:ansible_options = {'documentation_mapping': '<C-K>'}
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Gundo, the holy grail in undos
@@ -417,14 +251,14 @@ let g:SuperTabContextDefaultCompletionType = "<c-x><c-o>"
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Replaced with ALE for now
-" if has("nvim")
-"     let g:neomake_python_enabled_makers = ['flake8', 'pep8']
-"     " E501 is line length of 80 characters
-"     let g:neomake_python_flake8_maker = { 'args': ['--ignore=E501'], }
-"     let g:neomake_python_pep8_maker = { 'args': ['--max-line-length=105'], }
-" 
-"     Plug 'neomake/neomake'
-" endif
+ if has("nvim")
+     let g:neomake_python_enabled_makers = ['flake8', 'pep8']
+     " E501 is line length of 80 characters
+     let g:neomake_python_flake8_maker = { 'args': ['--ignore=E501'], }
+     let g:neomake_python_pep8_maker = { 'args': ['--max-line-length=105'], }
+ 
+     Plug 'neomake/neomake'
+ endif
 
 
 " Syntastic is awesome, but slow as ... on Vim
@@ -902,6 +736,12 @@ else
     silent! colo desert
 endif
 
+function! CopyFileAndOpen()
+  call inputsave()
+  let name = input('Enter file name: ')
+  call inputrestore()
+  execute 'saveas' expand('%:h') . '/' . name
+endfunction
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Save and restore the cursor
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -1022,25 +862,48 @@ endif
 syntax enable
 
 colorscheme OceanicNext
+
+" use ";" as leader
+let mapleader=";"
 " my shortcuts
 nnoremap Q :q<CR>
 nnoremap W :w<CR>
 nnoremap qq :wq<CR>
 nnoremap vv <C-w>v
-nnoremap ss <C-w>s
+nnoremap <leader>e <C-w>s
 nnoremap gis :Gstatus<CR>
 nnoremap gic :Git commit -a<CR>
 nnoremap gip :Gpush<CR>
 nnoremap gil :Glog<CR>
 
-nnoremap <C-l> <C-w><C-l>
-nnoremap <C-h> <C-w><C-h>
-nnoremap <C-j> <C-w><C-j>
-nnoremap <C-k> <C-w><C-k>
+" for fuzzy finder
+nnoremap <leader>f :Files<CR>
+nnoremap <leader>m :Marks<CR>
+nnoremap <leader>c :call CopyFileAndOpen()<CR>
 
-tnoremap <C-l> <C-\><C-n><C-w><C-l>
-tnoremap <C-h> <C-\><C-n><C-w><C-h>
-tnoremap <C-j> <C-\><C-n><C-w><C-j>
-tnoremap <C-k> <C-\><C-n><C-w><C-k>
+nnoremap <leader>b :Buffers<CR>
+nnoremap <leader>t :terminal<CR>izsh<CR>
+
+nnoremap <leader>l <C-w><C-l>
+nnoremap <leader>h <C-w><C-h>
+nnoremap <leader>j <C-w><C-j>
+nnoremap <leader>k <C-w><C-k>
+
+tnoremap <leader>l <C-\><C-n><C-w><C-l>
+tnoremap <leader>h <C-\><C-n><C-w><C-h>
+tnoremap <leader>j <C-\><C-n><C-w><C-j>
+tnoremap <leader>k <C-\><C-n><C-w><C-k>
 tnoremap <ESC> <C-\><C-n>
 
+
+let g:surround_{char2nr("d")} = "<div\1id: \r..*\r id=\"&\"\1>\r</div>"
+let g:surround_{char2nr("a")} = "{{ \r }}"
+let g:surround_{char2nr("s")} = "{% \r %}"
+let g:surround_{char2nr("u")} = "{% url '\r' %}"
+
+"""""""""""""""""""""""""""""""""""
+" personal mappings
+" 
+" increase number
+nnoremap <C-b> <C-a>
+nmap ff o<Esc>
