@@ -9,7 +9,7 @@ set background=dark
 filetype off 
 
 " set relative vim line numbers on
-set relativenumber
+" set relativenumber
 
 set cursorcolumn
 
