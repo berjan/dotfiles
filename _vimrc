@@ -39,7 +39,15 @@ if !filereadable(plugPath)
 endif
 
 "
-let g:python3_host_prog = '/usr/local/bin/python'
+" let g:python3_host_prog = '/usr/local/bin/python'
+let path_python = '/opt/homebrew/anaconda3/bin/python'
+if filereadable(path_python)
+    let g:python3_host_prog = path_python
+else
+    let g:python3_host_prog = '/usr/local/bin/python'
+endif
+
+
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

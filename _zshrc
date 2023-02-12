@@ -555,7 +555,7 @@ fi
 alias st="git status"
 alias br='git branch'
 
-#alias python="/usr/bin/python3"
+# alias python="/opt/homebrew/anaconda3/bin/python"
 #alias df="tmux attach || tmux new -s dotfiles 'cd ~/dotfiles; nvim ~/dotfiles/_vimrc' \; \
 
 path+=('/opt/homebrew/anaconda3/bin')
