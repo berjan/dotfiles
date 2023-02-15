@@ -886,6 +886,16 @@ nnoremap gic :Git commit -a<CR>
 nnoremap gip :Gpush<CR>
 nnoremap gil :Glog<CR>
 
+" for tag bar
+nnoremap <leader>i :Tagbar fj=<CR>
+let g:tagbar_autoclose=1
+let g:tagbar_map_closeallfolds='zM'
+
+" easy motion
+nmap s <Plug>(easymotion-overwin-f2)
+nmap <Leader>L <Plug>(easymotion-overwin-line)
+nmap <Leader>w <Plug>(easymotion-overwin-w)
+
 " for fuzzy finder
 nnoremap <leader>f :Files<CR>
 nnoremap <leader>m :Marks<CR>
