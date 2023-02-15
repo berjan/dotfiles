@@ -887,14 +887,15 @@ nnoremap gip :Gpush<CR>
 nnoremap gil :Glog<CR>
 
 " for tag bar
-nnoremap <leader>i :Tagbar fj=<CR>
+nnoremap <leader>i :Tagbar fj<CR>
 let g:tagbar_autoclose=1
-let g:tagbar_map_closeallfolds='zM'
+let g:tagbar_map_closeallfolds='=='
 
 " easy motion
-nmap s <Plug>(easymotion-overwin-f2)
+nmap <leader>s <Plug>(easymotion-overwin-f2)
 nmap <Leader>L <Plug>(easymotion-overwin-line)
 nmap <Leader>w <Plug>(easymotion-overwin-w)
+let g:EasyMotion_smartcase = 1
 
 " for fuzzy finder
 nnoremap <leader>f :Files<CR>
