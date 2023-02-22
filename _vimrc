@@ -56,7 +56,6 @@ endif
 call plug#begin(expand('~/.vim/bundle'))
 " adding ocean theme
 Plug 'mhartington/oceanic-next'
-Plug 'preservim/tagbar'
 " Plug 'dsawardekar/wordpress.vim'
 " Plug 'benmills/vimux'
 " support for Django+
@@ -81,7 +80,7 @@ Plug 'tpope/vim-repeat'
 " Plug 'evanmiller/nginx-vim-syntax'
 " Plug 'alfredodeza/coveragepy.vim'
 " Plug 'alfredodeza/pytest.vim'
-" Plug 'vim-scripts/pig.vimk
+" Plug 'vim-scripts/pig.vim'
 " if python_version >= 205
     " Uses with_statement so python 2.5 or higher
 "    Plug 'jmcantrell/vim-virtualenv'
@@ -871,7 +870,6 @@ endif
 syntax enable
 
 colorscheme OceanicNext
-" colorscheme default
 
 " use ";" as leader
 let mapleader=";"
@@ -885,17 +883,6 @@ nnoremap gis :Gstatus<CR>
 nnoremap gic :Git commit -a<CR>
 nnoremap gip :Gpush<CR>
 nnoremap gil :Glog<CR>
-
-" for tag bar
-nnoremap <leader>i :Tagbar fj<CR>
-let g:tagbar_autoclose=1
-let g:tagbar_map_closeallfolds='=='
-
-" easy motion
-nmap <leader>s <Plug>(easymotion-overwin-f2)
-nmap <Leader>L <Plug>(easymotion-overwin-line)
-nmap <Leader>w <Plug>(easymotion-overwin-w)
-let g:EasyMotion_smartcase = 1
 
 " for fuzzy finder
 nnoremap <leader>f :Files<CR>
