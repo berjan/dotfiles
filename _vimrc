@@ -887,6 +887,7 @@ nnoremap gil :Glog<CR>
 " for fuzzy finder
 nnoremap <leader>f :Files<CR>
 nnoremap <leader>m :Marks<CR>
+nnoremap <leader>g :Rg<CR>
 nnoremap <leader>c :call CopyFileAndOpen()<CR>
 
 nnoremap <leader>b :Buffers<CR>
