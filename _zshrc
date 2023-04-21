@@ -559,3 +559,9 @@ alias br='git branch'
 #alias df="tmux attach || tmux new -s dotfiles 'cd ~/dotfiles; nvim ~/dotfiles/_vimrc' \; \
 
 path+=('/opt/homebrew/anaconda3/bin')
+# fpath+=/usr/share/zsh/functions/Completion/Zsh
+autoload -Uz compinit
+compinit
+fpath+=/usr/share/zsh/vendor-completions
+# source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+eval "$(register-python-argcomplete /code/manage.py)"
