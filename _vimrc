@@ -916,3 +916,5 @@ let g:surround_{char2nr("u")} = "{% url '\r' %}"
 " increase number
 nnoremap <C-b> <C-a>
 nmap ff o<Esc>
+command! JsonTool %!python -m json.tool
+nnoremap <Leader>a :JsonTool<CR>
