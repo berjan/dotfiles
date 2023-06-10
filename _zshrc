@@ -509,6 +509,8 @@ fi
 # added by travis gem
 [ -f /Users/rick/.travis/travis.sh ] && source /Users/rick/.travis/travis.sh
 
+export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!/code/new_template/"'
+
 if [ -f ~/.fzf.zsh ]; then
     source ~/.fzf.zsh
 
@@ -545,9 +547,9 @@ if [ -f ~/.fzf.zsh ]; then
     bindkey '^R'    fzf-history-widget-accept
 
     if [ $(command_exists pt ) ]; then
-        export FZF_DEFAULT_COMMAND='pt --global-gitignore -g ""'
+        export FZF_DEFAULT_COMMAND='pt --global-gitignore -g "!/code/new_template"'
     elif [ $(command_exists ag ) ]; then
-        export FZF_DEFAULT_COMMAND='ag -g ""'
+        export FZF_DEFAULT_COMMAND='ag -g "!/code/new_template"'
     fi
     export FZF_DEFAULT_OPTS='--no-mouse'
 fi
@@ -560,8 +562,8 @@ alias br='git branch'
 
 path+=('/opt/homebrew/anaconda3/bin')
 # fpath+=/usr/share/zsh/functions/Completion/Zsh
-autoload -Uz compinit
-compinit
-fpath+=/usr/share/zsh/vendor-completions
-# source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-eval "$(register-python-argcomplete /code/manage.py)"
+# autoload -Uz compinit
+# compinit
+# fpath+=/usr/share/zsh/vendor-completions
+# # source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+# eval "$(register-python-argcomplete /code/manage.py)"

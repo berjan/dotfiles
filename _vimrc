@@ -55,7 +55,7 @@ endif
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call plug#begin(expand('~/.vim/bundle'))
 " adding ocean theme
-Plug 'mhartington/oceanic-next'
+" Plug 'mhartington/oceanic-next'
 " Plug 'dsawardekar/wordpress.vim'
 " Plug 'benmills/vimux'
 " support for Django+
@@ -115,34 +115,38 @@ command! -range=% Isort :<line1>,<line2>! isort -
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Deoplete autocompleter 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-if has("nvim")
-    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+" if has("nvim")
+"     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
-	let g:deoplete#enable_at_startup = 1
+" 	" let g:deoplete#enable_at_startup = 1
+" 	let g:deoplete#enable_cache = 1
+" 	" let g:deoplete#auto_complete_start_length = 3
+" 	call deoplete#custom#option('min_pattern_length', 3)
+" 	" let g:deoplete#custom#option("min_pattern_length", 3)
 
-	autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+" 	autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 
-	" omnifuncs
-	augroup omnifuncs
-  		autocmd!
-  		autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-  		autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-  		autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-  		autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-  		autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-	augroup end
-	" tern
-	if exists('g:plugs["tern_for_vim"]')
-  		let g:tern_show_argument_hints = 'on_hold'
-  		let g:tern_show_signature_in_pum = 1
-  		autocmd FileType javascript setlocal omnifunc=tern#Complete
-	endif
+" 	" omnifuncs
+" 	augroup omnifuncs
+"   		autocmd!
+"   		autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+"   		autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+"   		autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+"   		autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+"   		autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+" 	augroup end
+" 	" tern
+" 	if exists('g:plugs["tern_for_vim"]')
+"   		let g:tern_show_argument_hints = 'on_hold'
+"   		let g:tern_show_signature_in_pum = 1
+"   		autocmd FileType javascript setlocal omnifunc=tern#Complete
+" 	endif
 
-	" deoplete tab-complete
-	inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
-	" tern
-	autocmd FileType javascript nnoremap <silent> <buffer> gb :TernDef<CR>
-endif
+" 	" deoplete tab-complete
+" 	inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+" 	" tern
+" 	autocmd FileType javascript nnoremap <silent> <buffer> gb :TernDef<CR>
+" endif
 
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
@@ -836,7 +840,7 @@ call UpdateBufferCount()
 autocmd BufAdd * let g:buffer_count += 1 
 autocmd BufDelete * let g:buffer_count -= 1 
 
-set rulerformat+=%n/%{g:buffer_count}
+" set rulerformat+=%n/%{g:buffer_count}
 
 command! CloseHiddenBuffers call s:CloseHiddenBuffers()
 function! s:CloseHiddenBuffers()
@@ -869,7 +873,7 @@ endif
 " Theme
 syntax enable
 
-colorscheme OceanicNext
+" colorscheme OceanicNext
 
 " use ";" as leader
 let mapleader=";"
@@ -910,6 +914,9 @@ let g:surround_{char2nr("a")} = "{{ \r }}"
 let g:surround_{char2nr("s")} = "{% \r %}"
 let g:surround_{char2nr("u")} = "{% url '\r' %}"
 
+function! ReformatFunctionArguments()
+    normal! f(a<ENTER>
+endfunction
 """""""""""""""""""""""""""""""""""
 " personal mappings
 " 
@@ -918,3 +925,16 @@ nnoremap <C-b> <C-a>
 nmap ff o<Esc>
 command! JsonTool %!python -m json.tool
 nnoremap <Leader>a :JsonTool<CR>
+" let $FZF_DEFAULT_COMMAND = 'rg --files --no-ignore-vcs --exclude-dir={new_template}'
+
+let g:deoplete#enable_at_startup = 0
+set completeopt=
+set complete=""
+
+" a path for gf command to find django template files
+nnoremap <leader><leader>g :vsp<CR><C-W>lgf<CR>
+
+set path+=/code/shared/templates
+set path+=/code/proposals/templates
+set path+=/code/inventory/templates
+set path+=/code/customer/templates
