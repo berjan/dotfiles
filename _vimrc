@@ -11,7 +11,7 @@ filetype off
 " set relative vim line numbers on
 " set relativenumber
 
-set cursorcolumn
+" set cursorcolumn
 
 
 
@@ -938,3 +938,17 @@ set path+=/code/shared/templates
 set path+=/code/proposals/templates
 set path+=/code/inventory/templates
 set path+=/code/customer/templates
+
+let @a="f'i^M^[f  i^M^[f li^M^[lf)i^M^["
+
+function! FormatDjangoURL()
+  normal! @a
+endfunction
+
+
+" Map the function to a key combination, such as <Leader>f
+nnoremap <Leader><Leader>p :call FormatDjangoURL()<CR>
+nmap <Leader><Leader>f <Plug>(easymotion-overwin-f)
+nnoremap <expr> / '/'.input('/').'<cr>zz'
+
+
