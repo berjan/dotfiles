@@ -63,6 +63,7 @@ Plug 'tweekmonster/django-plus.vim'
 Plug 'dkprice/vim-easygrep'
 " test auto formatting html files
 Plug 'Chiel92/vim-autoformat'
+Plug 'tmhedberg/SimpylFold'
 " Plugin to autoswap files
 Plug 'gioele/vim-autoswap'
 " Super easy comment and uncomment. Do gc or gcc to comment or comment a line
@@ -511,6 +512,7 @@ set wildmode=list:full
 " ignore formats
 set wildignore=*.dll,*.o,*.obj,*.bak,*.exe,*.pyo,*.pyc,*.swp,*.jpg,*.gif,*.png 
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*\\tmp\\*,*.swp,*.zip,*.exe,*.dll
+set wildignore+=*/new_template/*,*.sqlite3,*/data/*,*/migrations/*
 if version >= 703
     set wildignorecase
 endif
@@ -561,7 +563,7 @@ set showmatch
 " how many tenths of a second to blink matching brackets for
 set matchtime=2 
 " do not highlight searched for phrases
-set nohlsearch 
+set hlsearch 
 " BUT do highlight as you type you search phrase
 set noincsearch 
 " Keep 5 lines (top/bottom) for scope
@@ -618,8 +620,8 @@ set fo=tcrq
 set shiftround 
 " no real tabs!
 set expandtab 
-" do not wrap line
-set nowrap 
+" do wrap line
+set wrap 
 " but above all -- follow the conventions laid before us
 set preserveindent 
 " case sensitive by default
@@ -736,17 +738,21 @@ autocmd Filetype python setlocal suffixesadd=.py
 " Colors 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Enable 256 color support when available
-if ((&term == 'xterm-256color') || (&term == 'screen-256color' || &term == 'nvim'))
-    set t_Co=256
-    set t_Sb=[4%dm
-    set t_Sf=[3%dm
-    silent! colo desert256
-    if &diff
-        colorscheme xorium
-    endif
-else
-    silent! colo desert
-endif
+" if ((&term == 'xterm-256color') || (&term == 'screen-256color' || &term == 'nvim'))
+"     set t_Co=256
+"     set t_Sb=[4%dm
+"     set t_Sf=[3%dm
+"     " silent! colo desert256
+"     " colorscheme default
+"     " if &diff
+"     "     colorscheme default
+"     "     " colorscheme xorium
+"     " endif
+" else
+"     silent! colo desert
+" endif
+
+colorscheme xorium
 
 function! CopyFileAndOpen()
   call inputsave()
@@ -938,6 +944,9 @@ set path+=/code/shared/templates
 set path+=/code/proposals/templates
 set path+=/code/inventory/templates
 set path+=/code/customer/templates
+set path+=/code/accounts/templates
+set path+=/code/invoices/templates
+set path+=/code/mails/templates
 
 let @a="f'i^M^[f  i^M^[f li^M^[lf)i^M^["
 
@@ -950,5 +959,144 @@ endfunction
 nnoremap <Leader><Leader>p :call FormatDjangoURL()<CR>
 nmap <Leader><Leader>f <Plug>(easymotion-overwin-f)
 nnoremap <expr> / '/'.input('/').'<cr>zz'
+nnoremap n nzz
+
+
+function! GotoTerminal()
+  windo if &buftype == 'terminal' | execute "wincmd w" | endif
+endfunction
+
+nnoremap <leader><leader>e :Explore<CR>
+
+set foldmethod=indent
+" set foldexpr=PythonFold(v:lnum)
+" function! PythonFold(lnum)
+"   let line = getline(a:lnum)
+"   if line =~ '^\s*def\|class\|@staticmethod\s'
+"     return ">1"
+"   endif
+"   return "="
+" endfunction
+
+function! QuickfixStarSearch()
+    " Get the word under the cursor
+    let l:word = expand('<cword>')
+
+    " Search for the word, populating the quickfix list
+    " vimgrep looks for the pattern in files and populates the quickfix list
+    " **/* means search in all files in all directories recursively
+    " . is the current directory (the root of the search)
+    execute 'vimgrep /\v' . l:word . '/g **/*.py'
+
+    " Open the quickfix window
+    copen
+endfunction
+
+
+" Map the function to a key sequence, for example <leader>*
+nnoremap <leader>* :call QuickfixStarSearch()<CR>
+
+augroup QuickFixAutoCenter
+    autocmd!
+    autocmd QuickFixCmdPost [c]* normal zz
+augroup END
+
+augroup CenterOnJump
+    autocmd!
+    autocmd BufEnter * normal! zz
+    autocmd WinEnter * normal! zz
+augroup END
+
+" Initialize global variable
+let g:last_pos = 0
+" Define the function
+function s:Cursor_Moved()
+  let cur_pos = winline()
+  if g:last_pos == 0
+    set cul
+    let g:last_pos = cur_pos
+    return
+  endif
+  let diff = g:last_pos - cur_pos
+  if diff > 1 || diff < -1
+    set cul
+  else
+    set nocul
+  endif
+  let g:last_pos = cur_pos
+endfunction
+
+function s:Reset_Highlight()
+  set nocul
+endfunction
+
+" Set up the augroup
+augroup CursorBehavior
+  autocmd!
+  autocmd CursorMoved,CursorMovedI * call s:Cursor_Moved()
+  autocmd WinEnter * call s:Reset_Highlight()
+augroup END
+
+
+
+nnoremap <leader>q :copen<CR>
+
+function! StartReplaceFromQuickfix()
+    " Get the word under the cursor
+    let word_to_replace = expand('<cword>')
+
+    " Prompt for the replacement
+    let replacement = input('Replace with: ')
+
+    " Start the replacement process (with confirmation)
+    execute ':%s/' . word_to_replace . '/' . replacement . '/gc'
+endfunction
+
+let g:SimpylFold_docstring_preview = 1
+
+" function! FilterQuickfixList()
+"     let lines = getqflist()
+"     let result = []
+    
+"     " echom 'Debug: Total quickfix items = ' . len(lines)
+
+"     for line in lines
+"         if line.text =~ 'File "\(/[^"]\+\)", line \(\d\+\)'
+"             let file = matchstr(line.text, '\(/[^"]\+\)')
+"             let line_num = matchstr(line.text, 'line \(\d\+\)')
+"             let line_num = matchstr(line_num, '\d\+')
+"             call add(result, {'filename': file, 'lnum': line_num, 'text': line.text})
+"             echom 'Debug: file = ' . file
+"             echom 'Debug: line_num = ' . line_num
+"             echom 'Debug: message = ' . line.text
+"         endif
+"     endfor
+"     call setqflist(result)
+    
+" endfunction
+set errorformat=%EFile\ \"%f\",\ line\ %l,\ in\ %m,%Z%p^,%-C%.%#
+
+function! FilterQuickfixList()
+    let lines = getqflist()
+    let result = []
+
+    let idx = 0
+    while idx < len(lines)
+        let line = lines[idx]
+        if line.text =~ 'File "\(/[^"]\+\)", line \(\d\+\)'
+            let file = matchstr(line.text, '\(/[^"]\+\)')
+            let line_num = matchstr(line.text, 'line \(\d\+\)')
+            let line_num = matchstr(line_num, '\d\+')
+            let message = lines[idx + 1].text . ' with error ' . lines[idx + 2].text  " capture the next line as the message
+            call add(result, {'filename': file, 'lnum': line_num, 'text': message})
+            let idx += 2  " Skip the next line since we've already processed it
+        else
+            let idx += 1
+        endif
+    endwhile
+
+    call setqflist(result)
+endfunction
+nnoremap <Leader><Leader>t :cgetbuffer<CR>:copen<CR>:call FilterQuickfixList()<CR>
 
 
