@@ -59,6 +59,7 @@ call plug#begin(expand('~/.vim/bundle'))
 " Plug 'dsawardekar/wordpress.vim'
 " Plug 'benmills/vimux'
 " support for Django+
+Plug 'Exafunction/codeium.vim'
 Plug 'tweekmonster/django-plus.vim'
 Plug 'dkprice/vim-easygrep'
 " test auto formatting html files
@@ -98,7 +99,6 @@ Plug 'rstacruz/sparkup'
 Plug 'guns/xterm-color-table.vim'
 
 
-Plug 'Chiel92/vim-autoformat'
 Plug 'Vimjas/vim-python-pep8-indent'
 Plug 'AndrewRadev/linediff.vim'
 
@@ -1099,4 +1099,20 @@ function! FilterQuickfixList()
 endfunction
 nnoremap <Leader><Leader>t :cgetbuffer<CR>:copen<CR>:call FilterQuickfixList()<CR>
 
+set expandtab       " use spaces instead of tabs
+set tabstop=4       " number of spaces for a tab
+set shiftwidth=4    " number of spaces to use for auto-indent
 
+" black python formatting
+let g:formatdef_black = "'black -q -'"
+let g:formatters_python = ['black']
+" formatting for django templates
+let g:formatdef_djhtml = "'djhtml -i 4 -'"
+let g:formatters_html = ['djhtml']
+
+" Specify formatters for specific file types
+let g:formatdef_prettier = "'prettier --stdin-filepath '.expand('%:p') --single-quote --trailing-comma all --write'"
+let g:formatters_javascript = ['prettier']
+let g:formatters_css = ['prettier']
+let g:formatters_html = ['prettier']
+let g:formatters_json = ['prettier']
