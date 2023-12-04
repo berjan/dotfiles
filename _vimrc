@@ -1116,3 +1116,5 @@ let g:formatters_javascript = ['prettier']
 let g:formatters_css = ['prettier']
 let g:formatters_html = ['prettier']
 let g:formatters_json = ['prettier']
+
+set mouse=a
