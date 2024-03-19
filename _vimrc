@@ -960,6 +960,10 @@ nnoremap <Leader><Leader>p :call FormatDjangoURL()<CR>
 nmap <Leader><Leader>f <Plug>(easymotion-overwin-f)
 nnoremap <expr> / '/'.input('/').'<cr>zz'
 nnoremap n nzz
+nnoremap <silent> <leader>rg :let @/=expand("<cword>")<CR>:Rg <C-R>=expand("<cword>")<CR><CR>
+" Map a key (e.g., <leader>s) to save the current search command and execute it
+nnoremap <leader><leader>r :let @z=':Rg ' . expand('<cword>')<CR>:execute @z<CR>
+
 
 
 function! GotoTerminal()
