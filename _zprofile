@@ -52,3 +52,7 @@ export PATH
 export ANDROID_SDK=/usr/local/Cellar/android-sdk/22.6.2
 export ANDROID_NDK=/usr/local/Cellar/android-ndk/r9d
 eval $(/opt/homebrew/bin/brew shellenv)
+
+# Created by `pipx` on 2023-11-16 18:29:23
+export PATH="$PATH:/Users/berjanbruens/.local/bin"
+export ICLOUD="/System/Volumes/Data/Users/berjanbruens/Library/Mobile Documents/com~apple~CloudDocs"

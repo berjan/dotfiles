@@ -4,6 +4,10 @@ export LANG=en_US.UTF-8
 export LDFLAGS="-L/opt/homebrew/opt/zlib/lib"
 os=$(uname)
 
+autoload -Uz compinit
+compinit
+
+
 
 # Fixing OS X Path annoyances
 # if [ -x /usr/libexec/path_helper ]; then
@@ -494,10 +498,6 @@ if [ 1 -eq "$DEBUG" ]; then
     exec 2>&3 3>&-
 fi
 
-#autoload bashcompinit
-#bashcompinit
-#autoload -Uz compinit
-#compinit
 
 if [ -d "~/.zsh/plugins" ]; then
     for f in ~/.zsh/plugins/*; do
@@ -553,7 +553,7 @@ if [ -f ~/.fzf.zsh ]; then
     export FZF_DEFAULT_OPTS='--no-mouse'
 fi
 
-export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!/code/new_template/"'
+export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!**/new_template/**"'
 
 alias st="git status"
 alias br='git branch'
@@ -568,3 +568,14 @@ path+=('/opt/homebrew/anaconda3/bin')
 # fpath+=/usr/share/zsh/vendor-completions
 # # source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 # eval "$(register-python-argcomplete /code/manage.py)"
+
+# Created by `pipx` on 2023-11-16 18:29:23
+# Tell Zsh to use your SSH config for autocomplete
+zstyle ':completion:*:ssh:*' user-hosts off
+zstyle ':completion:*:hosts' hosts off
+
+export PATH="$PATH:/Users/berjanbruens/.local/bin/:/opt/homebrew/bin/"
+# Set the range of UDP ports for Mosh to use
+export MOSH_PORT="60000:61000"
+alias ms='/opt/homebrew/bin/mosh --server="/opt/homebrew/bin/mosh-server" home'
+
