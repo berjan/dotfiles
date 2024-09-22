@@ -40,12 +40,26 @@ endif
 
 "
 " let g:python3_host_prog = '/usr/local/bin/python'
-let path_python = '/opt/homebrew/anaconda3/bin/python'
-if filereadable(path_python)
-    let g:python3_host_prog = path_python
+" Define possible paths for Python 3 on macOS
+let path_python_anaconda = '/opt/homebrew/anaconda3/bin/python3'
+let path_python_brew = '/opt/homebrew/bin/python3'
+let path_python_default = '/usr/local/bin/python3'
+
+" Check which Python 3 executable is available and set it as the provider
+if !empty($VIRTUAL_ENV)
+    let g:python3_host_prog = $VIRTUAL_ENV . '/bin/python3'
 else
-    let g:python3_host_prog = '/usr/local/bin/python'
+    if filereadable(path_python_anaconda)
+        let g:python3_host_prog = path_python_anaconda
+    elseif filereadable(path_python_brew)
+        let g:python3_host_prog = path_python_brew
+    elseif filereadable(path_python_default)
+        let g:python3_host_prog = path_python_default
+    else
+        echoerr "No suitable Python 3 installation found!"
+    endif
 endif
+
 
 
 
