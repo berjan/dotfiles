@@ -9,19 +9,6 @@ compinit
 
 
 
-# Fixing OS X Path annoyances
-# if [ -x /usr/libexec/path_helper ]; then
-#     echo 'Removing the execute flag from the OS X path helper as it is broken'
-#     sudo chmod ugo-x /usr/libexec/path_helper
-# fi
-
-if [ -x ~/bin/mount_workon ]; then
-    export ROOT_DIR=~/
-elif [ -x ./bin/mount_workon ]; then
-    export ROOT_DIR=./
-else;
-    export ROOT_DIR=~rick/
-fi
 
 if [ "$TERM" = "xterm" ]; then
     export TERM=xterm-256color
@@ -88,8 +75,8 @@ export LANG=en_US.UTF-8
 # Adding my own completion functions
 fpath=(/usr/local/share/zsh-completions $fpath)
 fpath=(/usr/local/share/zsh/site-functions/ $fpath)
-fpath=(${ROOT_DIR}.zsh/zsh-completions/src $fpath)
-fpath=(${ROOT_DIR}.zsh/site-functions $fpath)
+# fpath=(${ROOT_DIR}.zsh/zsh-completions/src $fpath)
+# fpath=(${ROOT_DIR}.zsh/site-functions $fpath)
 
 if which pyenv &> /dev/null; then eval "$(pyenv init -)"; fi
 
@@ -106,7 +93,7 @@ if which pyenv &> /dev/null; then eval "$(pyenv init -)"; fi
 # antigen apply
 
 # $PATH changes are done in .zprofile
-export PATH="$PATH:~/bin:${ROOT_DIR}bin:/Users/berjanbruens/Library/Python/3.8/bin"
+# export PATH="$PATH:~/bin:${ROOT_DIR}bin:/Users/berjanbruens/Library/Python/3.8/bin"
 export LDFLAGS="-L/opt/homebrew/opt/zlib/lib"
 export CPPFLAGS="-I/opt/homebrew/opt/zlib/include"
 
@@ -275,49 +262,49 @@ alias s='sudo -i zsh'
 #     sudo su -m $@ -c 'exec zsh'
 # }
 
-_workon_if_possible(){
-    if [ -e "$WORKON_HOME/$1" ] || [ -e "$WORKON_HOME/$1.sparseimage*" ]; then
-        echo "Working on $1"
-        workon "$1"
-        _virtualenv_tmux_name
-        return true
-    fi
-    return false
-}
+# _workon_if_possible(){
+#     if [ -e "$WORKON_HOME/$1" ] || [ -e "$WORKON_HOME/$1.sparseimage*" ]; then
+#         echo "Working on $1"
+#         workon "$1"
+#         _virtualenv_tmux_name
+#         return true
+#     fi
+#     return false
+# }
 
-_virtualenv_tmux_name(){
-    if [ -n "$TMUX" ] && [ -z "$VIRTUAL_ENV" ] && [ -z "$session_name" ]; then
-        export PS1="($session_name)$ORIGINAL_PS1"
-    fi
-}
+# _virtualenv_tmux_name(){
+#     if [ -n "$TMUX" ] && [ -z "$VIRTUAL_ENV" ] && [ -z "$session_name" ]; then
+#         export PS1="($session_name)$ORIGINAL_PS1"
+#     fi
+# }
 
 # Auto active virtualenv for the current directory
-activate(){
-    if [ -e "activate" ]; then
-        . ${ROOT_DIR}activate
-        _virtualenv_tmux_name
+# activate(){
+#     if [ -e "activate" ]; then
+#         . ${ROOT_DIR}activate
+#         _virtualenv_tmux_name
 
-        if [ -f "${VIRTUAL_ENV}/.project" ]; then
-            cd $(cat "${VIRTUAL_ENV}/.project")
-        fi
-        return
-    fi
-    # if our current dir is the name of a virtualenv, activate
-    _workon_if_possible $(basename "$PWD") && return
-    _workon_if_possible $(basename $(dirname "$(pwd)")) && return
-}
+#         if [ -f "${VIRTUAL_ENV}/venv" ]; then
+#             cd $(cat "${VIRTUAL_ENV}/venv")
+#         fi
+#         return
+#     fi
+#     # if our current dir is the name of a virtualenv, activate
+#     _workon_if_possible $(basename "$PWD") && return
+#     _workon_if_possible $(basename $(dirname "$(pwd)")) && return
+# }
 
-# Virtualenvwrapper stuff
-export WORKON_HOME="${HOME}/envs/"
+# # Virtualenvwrapper stuff
+# export WORKON_HOME="${HOME}/envs/"
 export PROJECT_HOME="${HOME}/workspace/"
 #export DISPLAY=:0
 
-. ${ROOT_DIR}bin/mount_workon
+# . ${ROOT_DIR}bin/mount_workon
 
 # activate virtualenv automatically
-if [[ -z "$VIRTUAL_ENV" || -n "$TMUX" ]]; then
-    activate
-fi
+# if [[ -z "$VIRTUAL_ENV" || -n "$TMUX" ]]; then
+#     activate
+# fi
 
 # # reset all bindkeys, this makes vi mode work _much_ faster
 # bindkey -rpM viins '\e'
@@ -489,7 +476,7 @@ zstyle ':completion:*:history-words'   menu yes
 zstyle ':completion:*:*:cd:*:directory-stack' menu yes select              
 zstyle ':completion:*' menu select=5
 
-test -f "${ROOT_DIR}.zshrc_local" && source "${ROOT_DIR}.zshrc_local"
+# test -f "${ROOT_DIR}.zshrc_local" && source "${ROOT_DIR}.zshrc_local"
 
 if [ 1 -eq "$DEBUG" ]; then
     # turn off tracing
@@ -578,4 +565,21 @@ export PATH="$PATH:/Users/berjanbruens/.local/bin/:/opt/homebrew/bin/"
 # Set the range of UDP ports for Mosh to use
 export MOSH_PORT="60000:61000"
 alias ms='/opt/homebrew/bin/mosh --server="/opt/homebrew/bin/mosh-server" home'
+
+# Function to automatically activate the virtualenv when entering a project directory
+function auto_activate_virtualenv() {
+    if [ -d "./venv" ]; then
+        if [ -f "./venv/bin/activate" ]; then
+            source "./venv/bin/activate"
+        fi
+    fi
+}
+
+# Hook into the directory change command to trigger virtualenv activation
+function chpwd() {
+    auto_activate_virtualenv
+}
+
+# Trigger the function on terminal start in case you're already in a project directory
+auto_activate_virtualenv
 
