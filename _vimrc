@@ -122,6 +122,8 @@ Plug 'sbdchd/neoformat'
 Plug 'Shougo/unite.vim'
 Plug 'Quramy/vison'
 
+
+
 " Easy import sorting for Python
 map <leader>i :Isort<cr>
 command! -range=% Isort :<line1>,<line2>! isort -
@@ -301,14 +303,22 @@ if has("nvim")
     " \    'python': ['autopep8', 'flake8', 'isort', 'mypy', 'pylint', 'yapf']
 
     let g:ale_fixers = {
-    \    'python': [
-    \        'add_blank_lines_for_python_control_statements',
-    \        'autopep8',
-    \        'isort',
-    \        'yapf',
-    \        'remove_trailing_lines',
-    \    ],
-    \}
+    \   'python': [
+    \       'add_blank_lines_for_python_control_statements',
+    \       'autopep8',
+    \       'isort',
+    \       'yapf',
+    \       'remove_trailing_lines',
+    \   ],
+    \   'javascript': ['prettier'],
+    \   'javascriptreact': ['prettier'],
+    \   'typescript': ['prettier'],
+    \   'typescriptreact': ['prettier'],
+\}
+    " Enable ALE to fix on save
+    let g:ale_fix_on_save = 1
+    " install npm -g prettier
+
 
     " Plug 'Syntastic' 
 
@@ -986,7 +996,92 @@ endfunction
 
 nnoremap <leader><leader>e :Explore<CR>
 
-set foldmethod=indent
+" Configure folding for Python
+augroup python_folding
+    autocmd!
+    autocmd FileType python setlocal foldmethod=indent
+    autocmd FileType python setlocal foldlevelstart=99
+augroup END
+
+" Configure folding for JavaScript and TypeScript
+augroup js_ts_folding
+    autocmd!
+    autocmd FileType javascript,typescript,javascriptreact,typescriptreact setlocal foldmethod=syntax
+    autocmd FileType javascript,typescript,javascriptreact,typescriptreact setlocal foldlevelstart=99
+augroup END
+
+" Function to show fold help in a floating window
+lua << EOF
+function _G.show_fold_help()
+    local lines = {
+        "zM: Close all folds.",
+        "zR: Open (unfold) all folds.",
+        "za: Toggle fold under the cursor.",
+        "zA: Toggle all folds under the cursor.",
+        "zc: Close the fold under the cursor.",
+        "zo: Open the fold under the cursor.",
+        "",
+        "Press <Enter> to execute, <Esc> to close."
+    }
+
+    -- Folding commands corresponding to each line
+    local commands = {
+        "zM",
+        "zR",
+        "za",
+        "zA",
+        "zc",
+        "zo"
+    }
+
+    -- Set window options for floating popup
+    local width = 40
+    local height = #lines
+    local buf = vim.api.nvim_create_buf(false, true)
+    local opts = {
+        style = "minimal",
+        relative = "editor",
+        width = width,
+        height = height,
+        row = math.floor((vim.o.lines - height) / 2),
+        col = math.floor((vim.o.columns - width) / 2),
+        border = "rounded"
+    }
+
+    vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
+    local win = vim.api.nvim_open_win(buf, true, opts)
+
+    -- Global function to execute the selected folding command
+    _G.execute_fold_command = function()
+        local cursor = vim.api.nvim_win_get_cursor(0)
+        local line_number = cursor[1]
+
+        if line_number > 0 and line_number <= #commands then
+            local command = commands[line_number]
+            -- Use nvim_feedkeys to simulate normal mode keypress
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(command, true, false, true), 'n', true)
+        end
+
+        -- Close the popup after executing the command
+        vim.api.nvim_win_close(win, true)
+    end
+
+    -- Map <Enter> to execute the selected command
+    vim.api.nvim_buf_set_keymap(buf, 'n', '<CR>', ':lua execute_fold_command()<CR>', { noremap = true, silent = true })
+
+    -- Map <Esc> to close the floating window
+    vim.api.nvim_buf_set_keymap(buf, 'n', '<Esc>', '<cmd>q<CR>', { noremap = true, silent = true })
+end
+
+-- Command to show the fold help
+vim.cmd("command! FoldHelp lua show_fold_help()")
+EOF
+
+
+
+
+
+
 " set foldexpr=PythonFold(v:lnum)
 " function! PythonFold(lnum)
 "   let line = getline(a:lnum)
