@@ -1,6 +1,7 @@
 # vim: ft=zsh
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
+LANGUAGE="en_US:en"
 export LDFLAGS="-L/opt/homebrew/opt/zlib/lib"
 os=$(uname)
 
@@ -70,7 +71,6 @@ zmodload -a colors
 zmodload -a autocomplete
 zmodload -a complist
 
-export LANG=en_US.UTF-8
 
 # Adding my own completion functions
 fpath=(/usr/local/share/zsh-completions $fpath)
@@ -167,14 +167,14 @@ alias push='git pull; git push'
 alias grep='grep --color=auto'
 test -x /usr/local/bin/hub && alias git=hub
 # Link vim to the OS X clipboard
-if [ -x /opt/homebrew/bin/nvim ]; then
-    alias vim="safe-reattach-to-user-namespace nvim"
-    alias vimdiff="safe-reattach-to-user-namespace nvim -d"
-else
-    alias vim="safe-reattach-to-user-namespace vim"
-    alias vimdiff="safe-reattach-to-user-namespace vimdiff"
-fi
-alias vi='vim'
+#if [ -x /opt/homebrew/bin/nvim ]; then
+#    alias vim="safe-reattach-to-user-namespace nvim"
+#    alias vimdiff="safe-reattach-to-user-namespace nvim -d"
+#else
+#    alias vim="safe-reattach-to-user-namespace vim"
+#    alias vimdiff="safe-reattach-to-user-namespace vimdiff"
+#fi
+alias vi='nvim'
 alias parallel='parallel --no-notice'
 alias vlc='open -a vlc'
 alias feh='/usr/local/bin/feh --auto-zoom --draw-filename --fullscreen --recursive'
