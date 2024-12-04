@@ -362,7 +362,7 @@ zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 export CLICOLOR=true
 export LSCOLORS=Exfxcxdxbxegedabagacad
 
-export EDITOR=vim
+export EDITOR=nvim
 
 zstyle ':completion:*' list-colors 'reply=( "=(#b)(*$VAR)(?)*=00=$color[green]=$color[bg-green]" )'
 zstyle ':completion:*:*:tmx:*:active-sessions' list-colors '=*=228;0'
@@ -561,7 +561,7 @@ path+=('/opt/homebrew/anaconda3/bin')
 zstyle ':completion:*:ssh:*' user-hosts off
 zstyle ':completion:*:hosts' hosts off
 
-export PATH="$PATH:/Users/berjanbruens/.local/bin/:/opt/homebrew/bin/"
+export PATH="$PATH:$HOME/.local/bin/:/opt/homebrew/bin/"
 # Set the range of UDP ports for Mosh to use
 export MOSH_PORT="60000:61000"
 alias ms='/opt/homebrew/bin/mosh --server="/opt/homebrew/bin/mosh-server" home'
