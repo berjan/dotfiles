@@ -192,13 +192,13 @@ function title(){
     printf "\033k$1\033\\"
 }
 
-function mosh(){
-    if [ -n "$1" ]; then
-        title "$1"
-    fi
-    /usr/local/bin/mosh $@
-    title ""
-}
+# function mosh(){
+#     if [ -n "$1" ]; then
+#         title "$1"
+#     fi
+#     /usr/local/bin/mosh $@
+#     title ""
+# }
 
 # Little trick to change the name of the shell
 function ssh(){
@@ -583,3 +583,8 @@ function chpwd() {
 # Trigger the function on terminal start in case you're already in a project directory
 auto_activate_virtualenv
 
+#export MOSH_SERVER_COMMAND="ssh %h mosh-server"
+export MOSH_SERVER_COMMAND="ssh office -t ssh %h mosh-server"
+
+
+. "$HOME/.local/bin/env"
