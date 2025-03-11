@@ -45,26 +45,37 @@ let path_python_anaconda = '/opt/homebrew/anaconda3/bin/python3'
 let path_python_brew = '/opt/homebrew/bin/python3'
 let path_python_default = '/usr/local/bin/python3'
 let path_python_default2 = '/bin/python3'
-
-" Check which Python 3 executable is available and set it as the provider
+" First, check if we're in a virtualenv
 if !empty($VIRTUAL_ENV)
-    let g:python3_host_prog = $VIRTUAL_ENV . '/bin/python3'
+    let g:python3_host_prog = $VIRTUAL_ENV . '/bin/python'
+    " echom "Using virtualenv Python: " . g:python3_host_prog
 else
-    if filereadable(path_python_anaconda)
+    " Define fallback paths (these were missing in your snippet)
+    let path_python_anaconda = expand('~/anaconda3/bin/python')
+    let path_python_brew = expand('/usr/local/bin/python3')
+    let path_python_default = expand('/usr/bin/python3')
+    let path_python_default2 = expand('/usr/local/bin/python3')
+    
+    " Check paths in order of preference
+    if executable(path_python_anaconda)
         let g:python3_host_prog = path_python_anaconda
-    elseif filereadable(path_python_brew)
+    elseif executable(path_python_brew)
         let g:python3_host_prog = path_python_brew
-    elseif filereadable(path_python_default)
+    elseif executable(path_python_default)
         let g:python3_host_prog = path_python_default
-    elseif filereadable(path_python_default2)
-        let g:python3_host_prog = path_python_default
+    elseif executable(path_python_default2)
+        let g:python3_host_prog = path_python_default2
     else
-        echoerr "No suitable Python 3 installation found!"
+        echom "Warning: No suitable Python 3 installation found!"
+        " Disable Python provider if no suitable Python found
+        let g:loaded_python3_provider = 0
     endif
 endif
 
-
-
+" Add this line to disable jedi-vim if Python provider isn't working
+if !has('python3')
+    let g:loaded_jedi = 1
+endif
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
