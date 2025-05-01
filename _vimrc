@@ -249,9 +249,6 @@ if has("clipboard")
   endif
 endif
 
-" Toggle paste mode with ctrl+i
-set pastetoggle=<C-i>
-
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Surround text/selection with tags
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -278,16 +275,6 @@ let g:riv_file_link_style = 2
 augroup filetypedetect
     au BufNewFile,BufRead *.rst set suffixesadd+=.rst
 augroup END
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Supertab so we can <Tab> for autocompletion
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-Plug 'ervandew/supertab'
-
-let g:SuperTabDefaultCompletionType = "context"
-let g:SuperTabContextDefaultCompletionType = "<c-x><c-o>"
-
-" I prefer to let the completion go from top to bottom
-" let g:SuperTabDefaultCompletionType = "<c-n>"
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Syntastic, uber awesome syntax and errors highlighter
@@ -1128,11 +1115,11 @@ augroup QuickFixAutoCenter
     autocmd QuickFixCmdPost [c]* normal zz
 augroup END
 
-augroup CenterOnJump
-    autocmd!
-    autocmd BufEnter * normal! zz
-    autocmd WinEnter * normal! zz
-augroup END
+"augroup CenterOnJump
+"    autocmd!
+"    autocmd BufEnter * normal! zz
+"    autocmd WinEnter * normal! zz
+"augroup END
 
 " Initialize global variable
 let g:last_pos = 0
@@ -1158,11 +1145,11 @@ function s:Reset_Highlight()
 endfunction
 
 " Set up the augroup
-augroup CursorBehavior
-  autocmd!
-  autocmd CursorMoved,CursorMovedI * call s:Cursor_Moved()
-  autocmd WinEnter * call s:Reset_Highlight()
-augroup END
+"augroup CursorBehavior
+"  autocmd!
+"  autocmd CursorMoved,CursorMovedI * call s:Cursor_Moved()
+"  autocmd WinEnter * call s:Reset_Highlight()
+"augroup END
 
 
 
