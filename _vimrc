@@ -965,14 +965,6 @@ set complete=""
 " a path for gf command to find django template files
 nnoremap <leader><leader>g :vsp<CR><C-W>lgf<CR>
 
-set path+=/code/shared/templates
-set path+=/code/proposals/templates
-set path+=/code/inventory/templates
-set path+=/code/customer/templates
-set path+=/code/accounts/templates
-set path+=/code/invoices/templates
-set path+=/code/mails/templates
-
 let @a="f'i^M^[f  i^M^[f li^M^[lf)i^M^["
 
 function! FormatDjangoURL()
@@ -1232,3 +1224,104 @@ let g:formatters_html = ['prettier']
 let g:formatters_json = ['prettier']
 
 set mouse=a
+
+augroup django_templates
+    autocmd!
+    autocmd FileType html,htmldjango setlocal includeexpr=substitute(v:fname,'^\\([^/]\\+\\)/','\\1/templates/\\1/','')
+    " Handle quoted paths in Django template tags
+    autocmd FileType html,htmldjango nnoremap <buffer> gf :call DjangoGotoFile()<CR>
+augroup END
+
+function! DjangoGotoFile()
+    " Get text under cursor
+    let l:cfile = expand('<cfile>')
+    
+    " If it looks like it might be a quoted string, extract the path
+    if l:cfile =~ '^[''"].*[''"]$' || l:cfile =~ '^[''"].*$' || l:cfile =~ '^.*[''"]$'
+        let l:cfile = substitute(l:cfile, '[''"]', '', 'g')
+    endif
+    
+    " Check if file exists directly
+    if filereadable(l:cfile)
+        execute 'edit ' . l:cfile
+        return
+    endif
+    
+    " Try in templates directory
+    let l:template_path = findfile(l:cfile, &path)
+    if !empty(l:template_path)
+        execute 'edit ' . l:template_path
+        return
+    endif
+    
+    " Try adding templates/ prefix for app templates (flat structure)
+    let l:parts = split(l:cfile, '/')
+    if len(l:parts) > 0
+        " Try app_name/templates/file.html pattern (flat structure)
+        if len(l:parts) == 2
+            let l:app_name = l:parts[0]
+            let l:file_path = l:parts[1]
+            let l:try_path = l:app_name . '/templates/' . l:file_path
+            let l:found_path = findfile(l:try_path, &path)
+            if !empty(l:found_path)
+                execute 'edit ' . l:found_path
+                return
+            endif
+        endif
+        
+        " Try app_name/templates/app_name/file.html pattern (namespaced structure)
+        if len(l:parts) >= 2
+            let l:app_name = l:parts[0]
+            let l:file_path = join(l:parts[1:], '/')
+            let l:try_path = l:app_name . '/templates/' . l:cfile
+            let l:found_path = findfile(l:try_path, &path)
+            if !empty(l:found_path)
+                execute 'edit ' . l:found_path
+                return
+            endif
+        endif
+        
+        " For single file reference, try all app directories
+        if len(l:parts) == 1
+            let l:file_name = l:parts[0]
+            let l:dirs = glob('*/templates', 0, 1)
+            for dir in l:dirs
+                let l:try_path = dir . '/' . l:file_name
+                if filereadable(l:try_path)
+                    execute 'edit ' . l:try_path
+                    return
+                endif
+            endfor
+        endif
+    endif
+    
+    " Additional check for project-level templates directory
+    let l:project_template_path = findfile('templates/' . l:cfile, &path)
+    if !empty(l:project_template_path)
+        execute 'edit ' . l:project_template_path
+        return
+    endif
+    
+    " Default gf behavior if nothing else worked
+    normal! gf
+endfunction
+
+function! DjangoGotoFileVSplit()
+    " Store current window
+    let l:current_window = winnr()
+    
+    " Create a vertical split
+    vsplit
+    
+    " Call the original function
+    call DjangoGotoFile()
+    
+    " If the file wasn't found, close the split and return to original window
+    if bufname('%') == ''
+        q
+        execute l:current_window . 'wincmd w'
+    endif
+endfunction
+
+" Add this to your autocmd group
+autocmd FileType html,htmldjango nnoremap <buffer> <leader><leader>g :call DjangoGotoFileVSplit()<CR>
