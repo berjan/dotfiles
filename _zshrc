@@ -587,4 +587,7 @@ auto_activate_virtualenv
 export MOSH_SERVER_COMMAND="ssh office -t ssh %h mosh-server"
 
 
-. "$HOME/.local/bin/env"
+# Source local env file if it exists
+if [ -f "$HOME/.local/bin/env" ]; then
+    . "$HOME/.local/bin/env"
+fi

@@ -122,3 +122,5 @@
 	versiontag = v
 [init]
 	templatedir = ~/.git_template
+[safe]
+	directory = /srv/solar_commisioning
