@@ -38,46 +38,6 @@ if !filereadable(plugPath)
     let iCanHazPlug=0
 endif
 
-"
-" let g:python3_host_prog = '/usr/local/bin/python'
-" Define possible paths for Python 3 on macOS
-let path_python_anaconda = '/opt/homebrew/anaconda3/bin/python3'
-let path_python_brew = '/opt/homebrew/bin/python3'
-let path_python_default = '/usr/local/bin/python3'
-let path_python_default2 = '/bin/python3'
-" First, check if we're in a virtualenv
-if !empty($VIRTUAL_ENV)
-    let g:python3_host_prog = $VIRTUAL_ENV . '/bin/python'
-    " echom "Using virtualenv Python: " . g:python3_host_prog
-else
-    " Define fallback paths (these were missing in your snippet)
-    let path_python_anaconda = expand('~/anaconda3/bin/python')
-    let path_python_brew = expand('/usr/local/bin/python3')
-    let path_python_default = expand('/usr/bin/python3')
-    let path_python_default2 = expand('/usr/local/bin/python3')
-    
-    " Check paths in order of preference
-    if executable(path_python_anaconda)
-        let g:python3_host_prog = path_python_anaconda
-    elseif executable(path_python_brew)
-        let g:python3_host_prog = path_python_brew
-    elseif executable(path_python_default)
-        let g:python3_host_prog = path_python_default
-    elseif executable(path_python_default2)
-        let g:python3_host_prog = path_python_default2
-    else
-        echom "Warning: No suitable Python 3 installation found!"
-        " Disable Python provider if no suitable Python found
-        let g:loaded_python3_provider = 0
-    endif
-endif
-
-" Add this line to disable jedi-vim if Python provider isn't working
-if !has('python3')
-    let g:loaded_jedi = 1
-endif
-
-
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Load and install the Plugs using Plug
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -326,6 +286,76 @@ if has("nvim")
     " " shouldn't do Python for us
     " let g:syntastic_python_checkers = []
 endif
+function! SetupALEVirtualenv()
+    " First check if we're in a virtualenv already
+    if !empty($VIRTUAL_ENV)
+        let l:venv_python = $VIRTUAL_ENV . '/bin/python3'
+        let l:venv_path = $VIRTUAL_ENV
+    else
+        " Try to detect a virtualenv in current directory
+        let l:potential_venvs = [
+            \ getcwd() . '/venv',
+            \ getcwd() . '/.venv',
+            \ expand('~/.virtualenvs/' . fnamemodify(getcwd(), ':t'))
+        \]
+        
+        let l:venv_path = ''
+        for venv in l:potential_venvs
+            if isdirectory(venv) && filereadable(venv . '/bin/python3')
+                let l:venv_path = venv
+                break
+            endif
+        endfor
+        
+        if empty(l:venv_path)
+            " No virtualenv found, use system Python instead of returning
+            " This ensures ALE still works even without a virtualenv
+            if exists('g:python3_host_prog')
+                let l:venv_python = g:python3_host_prog
+                let l:venv_path = fnamemodify(g:python3_host_prog, ':h:h')
+            else
+                " Fall back to system Python if nothing else works
+                let l:venv_python = '/usr/bin/python3'
+                let l:venv_path = '/usr/bin'
+            endif
+        else
+            let l:venv_python = l:venv_path . '/bin/python3'
+        endif
+    endif
+    
+    " Configure ALE to use the virtualenv
+    let g:ale_python_auto_virtualenv = 1
+    
+    " Set each tool to use the virtualenv Python
+    let g:ale_python_flake8_executable = l:venv_python
+    let g:ale_python_flake8_use_global = 0
+    
+    let g:ale_python_mypy_executable = l:venv_python
+    let g:ale_python_mypy_use_global = 0
+    
+    let g:ale_python_autopep8_executable = l:venv_python
+    let g:ale_python_autopep8_use_global = 0
+    
+    let g:ale_python_isort_executable = l:venv_python
+    let g:ale_python_isort_use_global = 0
+    
+    let g:ale_python_yapf_executable = l:venv_python
+    let g:ale_python_yapf_use_global = 0
+    
+    " Set PYTHONPATH to include the virtualenv site-packages
+    if !empty(l:venv_path)
+        " Find site-packages directory
+        let l:site_packages = glob(l:venv_path . '/lib/python*/site-packages')
+        if !empty(l:site_packages)
+            let $PYTHONPATH = l:site_packages . ':' . $PYTHONPATH
+        endif
+    endif
+    
+    " Optional: Configure mypy to ignore missing imports
+    let g:ale_python_mypy_options = '--ignore-missing-imports'
+    
+    echom "ALE: Using Python from " . l:venv_path
+endfunction
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Python Mode
@@ -1205,23 +1235,6 @@ function! FilterQuickfixList()
 endfunction
 nnoremap <Leader><Leader>t :cgetbuffer<CR>:copen<CR>:call FilterQuickfixList()<CR>
 
-set expandtab       " use spaces instead of tabs
-set tabstop=4       " number of spaces for a tab
-set shiftwidth=4    " number of spaces to use for auto-indent
-
-" black python formatting
-let g:formatdef_black = "'black -q -'"
-let g:formatters_python = ['black']
-" formatting for django templates
-let g:formatdef_djhtml = "'djhtml -i 4 -'"
-let g:formatters_html = ['djhtml']
-
-" Specify formatters for specific file types
-let g:formatdef_prettier = "'prettier --stdin-filepath '.expand('%:p') --single-quote --trailing-comma all --write'"
-let g:formatters_javascript = ['prettier']
-let g:formatters_css = ['prettier']
-let g:formatters_html = ['prettier']
-let g:formatters_json = ['prettier']
 
 set mouse=a
 
@@ -1325,3 +1338,76 @@ endfunction
 
 " Add this to your autocmd group
 autocmd FileType html,htmldjango nnoremap <buffer> <leader><leader>g :call DjangoGotoFileVSplit()<CR>
+
+" Check for virtualenv in different locations, prioritizing project venv
+if !empty($VIRTUAL_ENV)
+    " If VIRTUAL_ENV environment variable is set, use that
+    let g:python3_host_prog = $VIRTUAL_ENV . '/bin/python3'
+else
+    " Try to find project venvs in common locations
+    let project_venv_paths = [
+        \ getcwd() . '/venv/bin/python3',
+        \ getcwd() . '/.venv/bin/python3',
+    \ ]
+    
+    " Check for project venvs first
+    let venv_found = 0
+    for venv_path in project_venv_paths
+        if filereadable(venv_path)
+            let g:python3_host_prog = venv_path
+            let venv_found = 1
+            break
+        endif
+    endfor
+    
+    " If no project venv found, fall back to system Python paths
+    if !venv_found
+        " Define fallback paths
+        let path_python_anaconda = '/opt/homebrew/anaconda3/bin/python3'
+        let path_python_brew = '/opt/homebrew/bin/python3'
+        let path_python_default = '/usr/local/bin/python3'
+        let path_python_default2 = '/bin/python3'
+        
+        " Check paths in order of preference
+        if filereadable(path_python_anaconda)
+            let g:python3_host_prog = path_python_anaconda
+        elseif filereadable(path_python_brew)
+            let g:python3_host_prog = path_python_brew
+        elseif filereadable(path_python_default)
+            let g:python3_host_prog = path_python_default
+        elseif filereadable(path_python_default2)
+            let g:python3_host_prog = path_python_default2
+        else
+            echom "Warning: No suitable Python 3 installation found!"
+            " Disable Python provider if no suitable Python found
+            let g:loaded_python3_provider = 0
+        endif
+    endif
+endif
+
+" Add this to notify you when a venv is detected and which Python is being used
+echom "Using Python: " . g:python3_host_prog
+
+" Disable jedi-vim if Python provider isn't working
+if !has('python3')
+    let g:loaded_jedi = 1
+endif
+
+set expandtab       " use spaces instead of tabs
+set tabstop=4       " number of spaces for a tab
+set shiftwidth=4    " number of spaces to use for auto-indent
+
+" black python formatting
+let g:formatdef_black = "'black -q -'"
+let g:formatters_python = ['black']
+" formatting for django templates
+let g:formatdef_djhtml = "'djhtml -i 4 -'"
+let g:formatters_html = ['djhtml']
+
+" Specify formatters for specific file types
+let g:formatdef_prettier = "'prettier --stdin-filepath '.expand('%:p') --single-quote --trailing-comma all --write'"
+let g:formatters_javascript = ['prettier']
+let g:formatters_css = ['prettier']
+let g:formatters_html = ['prettier']
+let g:formatters_json = ['prettier']
+

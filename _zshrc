@@ -591,3 +591,5 @@ export MOSH_SERVER_COMMAND="ssh office -t ssh %h mosh-server"
 if [ -f "$HOME/.local/bin/env" ]; then
     . "$HOME/.local/bin/env"
 fi
+
+alias claude="/Users/berjanbruens/.claude/local/claude"
