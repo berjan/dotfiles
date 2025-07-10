@@ -594,5 +594,4 @@ fi
 
 # Create claude alias only if the binary exists
 if [ -f "$HOME/.claude/local/claude" ]; then
-    alias claude="$HOME/.claude/local/claude"
 fi
