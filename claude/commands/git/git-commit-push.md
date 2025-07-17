@@ -1,25 +1,15 @@
 ---
-description: Add all files, analyze changes, create commit message, commit and push
-allowed-tools: Bash
+allowed-tools: Bash(git add:*), Bash(git status:*), Bash(git commit:*)
+description: Create a git commit
 ---
 
-First, let me check the git status and understand what changes need to be committed:
+## Context
 
-!git status
+- Current git status: !`git status`
+- Current git diff (staged and unstaged changes): !`git diff HEAD`
+- Current branch: !`git branch --show-current`
+- Recent commits: !`git log --oneline -10`
 
-Now let me see the detailed changes:
+## Your task
 
-!git diff --cached
-!git diff
-
-Based on the changes above, I'll analyze what was modified and create an appropriate commit message.
-
-Important: The commit message should describe the actual changes made, without any references to AI tools or assistants.
-
-!git add -A
-
-Now I'll commit with a descriptive message based on the changes I analyzed:
-
-!git commit -m "appropriate commit message describing the actual changes"
-
-!git push
+Based on the above changes, create a single git commit. Do not use LLM references like Claude or other LLM's. 
