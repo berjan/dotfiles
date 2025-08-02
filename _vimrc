@@ -9,9 +9,7 @@ set background=dark
 filetype off 
 
 " set relative vim line numbers on
-" set relativenumber
 
-" set cursorcolumn
 
 
 
@@ -43,9 +41,6 @@ endif
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call plug#begin(expand('~/.vim/bundle'))
 " adding ocean theme
-" Plug 'mhartington/oceanic-next'
-" Plug 'dsawardekar/wordpress.vim'
-" Plug 'benmills/vimux'
 " support for Django+
 Plug 'Exafunction/codeium.vim'
 Plug 'tweekmonster/django-plus.vim'
@@ -62,15 +57,7 @@ Plug 'tpope/vim-fugitive'
 " Easier way to move around in Vim
 Plug 'Lokaltog/vim-easymotion'
 " Snipmate and requirements for TextMate snippets
-" Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-repeat'
-" Plug 'christoomey/vim-tmux-navigator'
-" Plug 'lepture/vim-jinja'
-" Plug 'thiderman/vim-supervisor'
-" Plug 'evanmiller/nginx-vim-syntax'
-" Plug 'alfredodeza/coveragepy.vim'
-" Plug 'alfredodeza/pytest.vim'
-" Plug 'vim-scripts/pig.vim'
 " if python_version >= 205
     " Uses with_statement so python 2.5 or higher
 "    Plug 'jmcantrell/vim-virtualenv'
@@ -78,7 +65,6 @@ Plug 'tpope/vim-repeat'
 Plug 'rizzatti/dash.vim'
 Plug 'vim-scripts/vim-coffee-script'
 Plug 'tshirtman/vim-cython'
-" Bundle 'clickable.vim'
 
 " Javascript/html indending
 Plug 'pangloss/vim-javascript'
@@ -157,16 +143,11 @@ let g:gundo_verbose_graph=0
 
 Plug 'MarcWeber/vim-addon-mw-utils'
 Plug 'tomtom/tlib_vim'
-" Plug 'garbas/vim-snipmate'
 
 " Lots of snippets
-" Plug 'honza/vim-snippets'
 " snippets for BibTeX files
-" Plug 'rbonvall/snipmate-snippets-bib'
 " snippets for Arduino files
-" Plug 'sudar/vim-arduino-snippets'
 " snippets for Twitter Bootstrap markup, in HTML and Haml
-" Plug 'bonsaiben/bootstrap-snippets'
 
 
 " Rainbow parenthesis
@@ -220,7 +201,6 @@ autocmd FileType rst vmap m S:math<CR>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " reStructuedText in Vim
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Plug 'Rykka/riv.vim'
 " Set the default path for Riv (Not supported yet, will work in 0.75 and up)
 let g:riv_default_path = "~/Desktop/TU"
 let main_project = {'path': './',  'build_path': 'build'}
@@ -514,7 +494,6 @@ set modelines=4
 " also load settings from files in your current working directory from files
 " you might not trust. Beware of this if you regularly open directories from
 " untrusted sources
-" set exrc
 set secure
 " Lower the timeout for mappings, they are annoyingly slow otherwise
 set timeout timeoutlen=5000 ttimeoutlen=50
@@ -871,7 +850,6 @@ if filereadable(getcwd() . '/.session.vim')
 endif
 endfunction
 
-" autocmd VimLeave * call SaveSess()
 autocmd VimEnter * nested call RestoreSess()
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -879,7 +857,6 @@ autocmd VimEnter * nested call RestoreSess()
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " load filetype plugins and indent settings
 filetype plugin indent on 
-" autocmd BufRead *.py silent PyFlake|silent redraw
 " syntax highlighting on
 syntax on 
 
@@ -934,7 +911,6 @@ endif
 " Theme
 syntax enable
 
-" colorscheme OceanicNext
 
 " use ";" as leader
 let mapleader=";"
