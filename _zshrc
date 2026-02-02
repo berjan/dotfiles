@@ -602,12 +602,12 @@ sync-dotfiles() {
     if [ -d "$HOME/dotfiles" ]; then
         echo "Syncing dotfiles..."
         (cd "$HOME/dotfiles" && git pull)
-        
+
         # Run sync_claude_commands.sh if it exists
         if [ -f "$HOME/dotfiles/sync_claude_commands.sh" ]; then
             "$HOME/dotfiles/sync_claude_commands.sh"
         fi
-        
+
         # Update sync marker
         echo $(date +%s) > "$HOME/.dotfiles_last_sync"
         echo "Dotfiles synced successfully!"
@@ -621,25 +621,27 @@ if [ -d "$HOME/dotfiles" ]; then
     # Check if we haven't synced recently (within last hour)
     SYNC_MARKER="$HOME/.dotfiles_last_sync"
     CURRENT_TIME=$(date +%s)
-    
+
     if [ -f "$SYNC_MARKER" ]; then
         LAST_SYNC=$(cat "$SYNC_MARKER")
         TIME_DIFF=$((CURRENT_TIME - LAST_SYNC))
     else
         TIME_DIFF=9999999
     fi
-    
+
     # Sync if more than 1 hour has passed or marker doesn't exist
     if [ $TIME_DIFF -gt 3600 ]; then
         echo "Syncing dotfiles..."
         (cd "$HOME/dotfiles" && git pull --quiet 2>/dev/null)
-        
+
         # Run sync_claude_commands.sh if it exists
         if [ -f "$HOME/dotfiles/sync_claude_commands.sh" ]; then
             "$HOME/dotfiles/sync_claude_commands.sh" >/dev/null 2>&1
         fi
-        
+
         # Update sync marker
         echo $CURRENT_TIME > "$SYNC_MARKER"
     fi
 fi
+
+export NODE_OPTIONS="--max-old-space-size=8192"
