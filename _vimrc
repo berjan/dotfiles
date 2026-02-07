@@ -42,7 +42,6 @@ endif
 call plug#begin(expand('~/.vim/bundle'))
 " adding ocean theme
 " support for Django+
-Plug 'Exafunction/codeium.vim'
 Plug 'tweekmonster/django-plus.vim'
 Plug 'dkprice/vim-easygrep'
 " test auto formatting html files
