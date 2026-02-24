@@ -3,6 +3,7 @@ export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 LANGUAGE="en_US:en"
 export LDFLAGS="-L/opt/homebrew/opt/zlib/lib"
+export NODE_OPTIONS="--max-old-space-size=8192"
 os=$(uname)
 
 autoload -Uz compinit
@@ -564,15 +565,13 @@ zstyle ':completion:*:hosts' hosts off
 
 export PATH="$PATH:$HOME/.local/bin/:/opt/homebrew/bin/"
 # Set the range of UDP ports for Mosh to use
-export MOSH_PORT="60000:61000"
-alias ms='/opt/homebrew/bin/mosh --server="/opt/homebrew/bin/mosh-server" home'
 
 # Function to automatically activate the virtualenv when entering a project directory
 function auto_activate_virtualenv() {
-    if [ -d "./venv" ]; then
-        if [ -f "./venv/bin/activate" ]; then
-            source "./venv/bin/activate"
-        fi
+    if [ -f "./venv/bin/activate" ]; then
+        source "./venv/bin/activate"
+    elif [ -f "./.venv/bin/activate" ]; then
+        source "./.venv/bin/activate"
     fi
 }
 
@@ -585,7 +584,7 @@ function chpwd() {
 auto_activate_virtualenv
 
 #export MOSH_SERVER_COMMAND="ssh %h mosh-server"
-export MOSH_SERVER_COMMAND="ssh office -t ssh %h mosh-server"
+#export MOSH_SERVER_COMMAND="ssh office -t ssh %h mosh-server"
 
 
 # Source local env file if it exists
@@ -595,6 +594,8 @@ fi
 
 # Create claude alias only if the binary exists
 if [ -f "$HOME/.claude/local/claude" ]; then
+    alias claude="$HOME/.claude/local/claude"
+    alias cc="claude --dangerously-skip-permissions"
 fi
 
 # Function to manually sync dotfiles
@@ -645,3 +646,10 @@ if [ -d "$HOME/dotfiles" ]; then
 fi
 
 export NODE_OPTIONS="--max-old-space-size=8192"
+
+# bun completions
+[ -s "/Users/berjanbruens/.bun/_bun" ] && source "/Users/berjanbruens/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
