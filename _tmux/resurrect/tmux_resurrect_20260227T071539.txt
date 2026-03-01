@@ -1,0 +1,32 @@
+pane	bruensdt	0	1	:*	0	✳ Mobile UI Parity	:/Users/berjanbruens/workspace/bruensdt	0	node	:claude 
+pane	bruensdt	0	1	:*	1	✳ Test Debugger Agent	:/Users/berjanbruens/workspace/bruensdt	0	node	:claude 
+pane	bruensdt	0	1	:*	2	✳ Deploy workflow	:/Users/berjanbruens/workspace/bruensdt	1	node	:claude 
+pane	island-bookings	0	0	:	0	✳ Behat tests in commits	:/Users/berjanbruens/workspace/island-bookings/api	0	node	:zsh
+pane	island-bookings	0	0	:	1	✳ File Opening Request	:/Users/berjanbruens/workspace/island-bookings/api	1	node	:claude 
+pane	island-bookings	0	0	:	2	✳ Route Finding Functionality	:/Users/berjanbruens/workspace/island-bookings/api	0	node	:claude 
+pane	island-bookings	0	0	:	3	✳ GitLab Deploy Button	:/Users/berjanbruens/workspace/island-bookings/api	0	node	:claude 
+pane	island-bookings	1	0	:	0	✳ API Analysis and Improvement	:/Users/berjanbruens/workspace/island-bookings/frontend	1	node	:claude 
+pane	island-bookings	2	0	:	0	✳ Login Credentials	:/Users/berjanbruens/workspace/island-bookings/backoffice-2	1	node	:claude 
+pane	island-bookings	3	0	:	0	✳ Git Commit	:/Users/berjanbruens/workspace/island-bookings/api	0	node	:claude 
+pane	island-bookings	3	0	:	1	✳ GitLab Vault Secrets	:/Users/berjanbruens/workspace/island-bookings	1	node	:claude 
+pane	island-bookings	3	0	:	2	✳ Kubernetes Migration Planning	:/Users/berjanbruens/workspace/island-bookings/api	0	node	:claude 
+pane	island-bookings	4	0	:-	0	✳ Page Load Animations	:/Users/berjanbruens/workspace/island-bookings	0	node	:claude  
+pane	island-bookings	4	0	:-	1	✳ Claude Code	:/Users/berjanbruens/workspace/island-bookings	1	node	:claude   
+pane	island-bookings	4	0	:-	2	✳ Progress Check	:/Users/berjanbruens/workspace/island-bookings	0	node	:claude  
+pane	island-bookings	5	1	:*	0	✳ Website Scraping Project	:/Users/berjanbruens/workspace/island-bookings	1	node	:claude 
+pane	island-bookings	5	1	:*	1	✳ Claude Code	:/Users/berjanbruens/workspace/island-bookings/legacy	0	node	:claude 
+pane	plukeenroos	0	1	:*	0	✳ Data Reset on Deploy	:/Users/berjanbruens/workspace/plukeenroos	1	zsh	:
+pane	plukeenroos	0	1	:*	1	✳ SQLite Database File	:/Users/berjanbruens/workspace/plukeenroos	0	node	:claude 
+pane	plukeenroos	0	1	:*	2	✳ Django Admin Superuser Login	:/Users/berjanbruens/workspace/plukeenroos	0	node	:claude 
+pane	x-api	0	1	:*	0	✳ Server Port Error	:/Users/berjanbruens/workspace/x	1	node	:claude 
+pane	x-api	0	1	:*	1	✳ Git commit	:/Users/berjanbruens/workspace/x	0	node	:claude 
+window	bruensdt	0	:node	1	:*	e3c0,289x70,0,0{95x70,0,0,5,95x70,96,0,23,97x70,192,0,6}	:
+window	island-bookings	0	:backend	0	:	3514,289x70,0,0{115x70,0,0,0,57x70,116,0,1,57x70,174,0,15,57x70,232,0,4}	off
+window	island-bookings	1	:frontend	0	:	b71f,289x70,0,0,2	off
+window	island-bookings	2	:backoffice	0	:	5bc3,289x70,0,0,14	off
+window	island-bookings	3	:git	0	:	4a2c,289x70,0,0{95x70,0,0,16,95x70,96,0,17,97x70,192,0,18}	off
+window	island-bookings	4	:ib-agents	0	:-	7458,289x70,0,0{72x70,0,0,19,71x70,73,0,28,144x70,145,0,26}	off
+window	island-bookings	5	:node	1	:*	a6b4,289x70,0,0{144x70,0,0,27,144x70,145,0,29}	:
+window	plukeenroos	0	:zsh	1	:*	4231,289x70,0,0{144x70,0,0,7,72x70,145,0,8,71x70,218,0,9}	:
+window	x-api	0	:node	1	:*	a6ae,289x70,0,0{144x70,0,0,12,144x70,145,0,13}	:
+state	island-bookings	
