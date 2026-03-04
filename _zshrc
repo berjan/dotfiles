@@ -595,8 +595,8 @@ fi
 # Create claude alias only if the binary exists
 if [ -f "$HOME/.claude/local/claude" ]; then
     alias claude="$HOME/.claude/local/claude"
-    alias cc="claude --dangerously-skip-permissions"
 fi
+alias cc="claude --dangerously-skip-permissions"
 
 # Function to manually sync dotfiles
 sync-dotfiles() {
