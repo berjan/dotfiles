@@ -1,5 +1,7 @@
 macos-option-as-alt = true
 shell-integration-features = cursor,sudo,title,ssh-env,ssh-terminfo,path
+clipboard-read = allow
+clipboard-write = allow
 
 keybind = cmd+shift+i=prompt_surface_title
 keybind = ctrl+shift+i=prompt_surface_title
