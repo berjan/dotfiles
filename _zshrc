@@ -598,6 +598,11 @@ if [ -f "$HOME/.claude/local/claude" ]; then
 fi
 alias cc="claude --dangerously-skip-permissions"
 
+# Zed editor CLI
+if [ -f "/Applications/Zed.app/Contents/MacOS/cli" ]; then
+    alias zed="/Applications/Zed.app/Contents/MacOS/cli"
+fi
+
 # Function to manually sync dotfiles
 sync-dotfiles() {
     if [ -d "$HOME/dotfiles" ]; then

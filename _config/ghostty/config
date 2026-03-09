@@ -1,2 +1,9 @@
+macos-option-as-alt = true
+shell-integration-features = cursor,sudo,title,ssh-env,ssh-terminfo,path
+
 keybind = cmd+shift+i=prompt_surface_title
 keybind = ctrl+shift+i=prompt_surface_title
+keybind = global:ctrl+grave_accent=toggle_quick_terminal
+
+quick-terminal-position = top
+quick-terminal-autohide = true
