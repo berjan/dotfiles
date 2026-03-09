@@ -163,6 +163,15 @@ ln -sf "$HOME/.mpv" "$HOME/.config/mpv"
 ln -sf "$HOME/.vim" "$HOME/.config/nvim"
 ln -sf "$HOME/.vimrc" "$HOME/.config/nvim/init.vim"
 
+# Ghostty config
+if [ "$(uname)" = "Darwin" ]; then
+    mkdir -p "$HOME/Library/Application Support/com.mitchellh.ghostty"
+    link "$PWD/_config/ghostty/config" "$HOME/Library/Application Support/com.mitchellh.ghostty/config"
+else
+    mkdir -p "$HOME/.config/ghostty"
+    link "$PWD/_config/ghostty/config" "$HOME/.config/ghostty/config"
+fi
+
 # Tmux setup
 if [ ! -d "$HOME/.tmux/plugins/tundle" ]; then
     git clone --depth=1 https://github.com/javier-lopez/tundle ~/.tmux/plugins/tundle || true
