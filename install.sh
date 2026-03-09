@@ -170,6 +170,13 @@ if [ "$(uname)" = "Darwin" ]; then
 else
     mkdir -p "$HOME/.config/ghostty"
     link "$PWD/_config/ghostty/config" "$HOME/.config/ghostty/config"
+    # Install ghostty terminfo so TERM=xterm-ghostty works over SSH
+    if [ -f "$PWD/_config/ghostty/xterm-ghostty.terminfo" ]; then
+        if ! infocmp xterm-ghostty >/dev/null 2>&1; then
+            echo "Installing ghostty terminfo..."
+            tic -x "$PWD/_config/ghostty/xterm-ghostty.terminfo"
+        fi
+    fi
 fi
 
 # Tmux setup
