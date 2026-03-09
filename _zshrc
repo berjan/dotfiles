@@ -509,8 +509,8 @@ if command -v fzf >/dev/null 2>&1; then
     fzf-history-widget-accept() {
         local selected num
         setopt localoptions noglobsubst pipefail 2> /dev/null
-        # selected=( $(fc -l 1 | eval "$(__fzfcmd) +s --tac +m -n2..,.. --tiebreak=index --toggle-sort=ctrl-r $FZF_CTRL_R_OPTS -q ${(q)LBUFFER}") )
-        selected=( $(fc -l 1 | eval "$(__fzfcmd) +s --tac +m -n2..,.. --tiebreak=index --toggle-sort=ctrl-r --expect=tab,ctrl-e,left,right $FZF_CTRL_R_OPTS -q ${(q)LBUFFER}") )
+        # selected=( $(fc -l 1 | eval "fzf +s --tac +m -n2..,.. --tiebreak=index --toggle-sort=ctrl-r $FZF_CTRL_R_OPTS -q ${(q)LBUFFER}") )
+        selected=( $(fc -l 1 | eval "fzf +s --tac +m -n2..,.. --tiebreak=index --toggle-sort=ctrl-r --expect=tab,ctrl-e,left,right $FZF_CTRL_R_OPTS -q ${(q)LBUFFER}") )
 
         local ret=$?
         if [ -n "$selected" ]; then
