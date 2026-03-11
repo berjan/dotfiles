@@ -603,6 +603,20 @@ if [ -f "$HOME/.claude/local/claude" ]; then
 fi
 alias cc="claude --dangerously-skip-permissions"
 
+# Toggle wide terminal to prevent URL line wrapping
+_wide_original_cols=""
+wide() {
+    if [[ -n "$_wide_original_cols" ]]; then
+        stty columns "$_wide_original_cols"
+        _wide_original_cols=""
+        echo "Columns restored to $(tput cols)"
+    else
+        _wide_original_cols=$(tput cols)
+        stty columns 500
+        echo "Columns set to 500 (run 'wide' again to restore)"
+    fi
+}
+
 # Zed editor CLI
 if [ -f "/Applications/Zed.app/Contents/MacOS/cli" ]; then
     alias zed="/Applications/Zed.app/Contents/MacOS/cli"
