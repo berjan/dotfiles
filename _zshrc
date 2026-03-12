@@ -592,14 +592,108 @@ auto_activate_virtualenv
 #export MOSH_SERVER_COMMAND="ssh office -t ssh %h mosh-server"
 
 
-# Source local env file if it exists
+# Source local machine secrets (kept out of git)
+if [ -f "$HOME/.env.local" ]; then
+    . "$HOME/.env.local"
+fi
+
+if [[ -o interactive ]]; then
+    if [ ! -f "$HOME/.env.local" ] || [ -z "$ANTHROPIC_OAUTH_TOKEN" ]; then
+        echo "[dotfiles] Secrets not configured. Run: setup-secrets (or check-secrets)"
+
+        if [ ! -f "$HOME/.env.local" ]; then
+            echo "[dotfiles] Missing ~/.env.local (local secrets file)."
+            echo "[dotfiles] Run: setup-secrets"
+            echo "[dotfiles] Or:  cp ~/.env.local.example ~/.env.local"
+            if [ ! -f "$HOME/.env.local.example" ] && [ ! -f "$HOME/dotfiles/_env.local.example" ]; then
+                echo "[dotfiles] (No env example found, create ~/.env.local manually)"
+            fi
+        fi
+
+        if [ -z "$ANTHROPIC_OAUTH_TOKEN" ]; then
+            echo "[dotfiles] Missing ANTHROPIC_OAUTH_TOKEN in your environment."
+            echo "[dotfiles] Add to ~/.env.local: export ANTHROPIC_OAUTH_TOKEN=\"...\""
+        fi
+    fi
+fi
+
+# Backwards-compatible local env file
 if [ -f "$HOME/.local/bin/env" ]; then
     . "$HOME/.local/bin/env"
 fi
 
+setup-secrets() {
+    local env_example=""
+    if [ -f "$HOME/.env.local.example" ]; then
+        env_example="$HOME/.env.local.example"
+    elif [ -f "$HOME/dotfiles/_env.local.example" ]; then
+        env_example="$HOME/dotfiles/_env.local.example"
+    fi
+
+    if [ ! -f "$HOME/.env.local" ]; then
+        if [ -n "$env_example" ]; then
+            cp "$env_example" "$HOME/.env.local"
+            echo "[setup-secrets] Copied ${env_example/#$HOME/~} -> ~/.env.local"
+        else
+            {
+                echo '# Local machine secrets'
+                echo 'export ANTHROPIC_OAUTH_TOKEN=""'
+            } > "$HOME/.env.local"
+            echo "[setup-secrets] No env example found; created a minimal ~/.env.local"
+        fi
+    else
+        echo "[setup-secrets] ~/.env.local already exists"
+    fi
+
+    # Keep secrets file user-readable/writable only
+    chmod 600 "$HOME/.env.local"
+
+    # Open the file in a sensible editor so the user can fill in keys immediately
+    local editor_cmd="${VISUAL:-${EDITOR:-}}"
+    if [ -z "$editor_cmd" ]; then
+        if command -v nvim >/dev/null 2>&1; then
+            editor_cmd="nvim"
+        elif command -v vim >/dev/null 2>&1; then
+            editor_cmd="vim"
+        elif command -v vi >/dev/null 2>&1; then
+            editor_cmd="vi"
+        elif command -v nano >/dev/null 2>&1; then
+            editor_cmd="nano"
+        fi
+    fi
+
+    if [ -n "$editor_cmd" ] && command -v "$editor_cmd" >/dev/null 2>&1; then
+        "$editor_cmd" "$HOME/.env.local"
+    else
+        echo "[setup-secrets] Open ~/.env.local and add ANTHROPIC_OAUTH_TOKEN"
+    fi
+}
+
+check-secrets() {
+    local missing=0
+
+    if [ ! -f "$HOME/.env.local" ]; then
+        echo "[check-secrets] ~/.env.local is missing."
+        echo "[check-secrets] Run: setup-secrets"
+        echo "[check-secrets] Or:  cp ~/.env.local.example ~/.env.local"
+        if [ ! -f "$HOME/.env.local.example" ] && [ ! -f "$HOME/dotfiles/_env.local.example" ]; then
+            echo "[check-secrets] (No env example found, create ~/.env.local manually)"
+        fi
+    fi
+
+    if [ -n "$ANTHROPIC_OAUTH_TOKEN" ]; then
+        echo "[check-secrets] ANTHROPIC_OAUTH_TOKEN is set."
+    else
+        echo "[check-secrets] ANTHROPIC_OAUTH_TOKEN is missing."
+        echo "[check-secrets] Add to ~/.env.local: export ANTHROPIC_OAUTH_TOKEN=\"...\""
+        missing=1
+    fi
+
+    return $missing
+}
+
 # Create claude alias only if the binary exists
 if [ -f "$HOME/.claude/local/claude" ]; then
-    alias claude="$HOME/.claude/local/claude"
 fi
 alias cc="claude --dangerously-skip-permissions"
 
@@ -628,11 +722,6 @@ sync-dotfiles() {
         echo "Syncing dotfiles..."
         (cd "$HOME/dotfiles" && git pull)
 
-        # Run sync_claude_commands.sh if it exists
-        if [ -f "$HOME/dotfiles/sync_claude_commands.sh" ]; then
-            "$HOME/dotfiles/sync_claude_commands.sh"
-        fi
-
         # Update sync marker
         echo $(date +%s) > "$HOME/.dotfiles_last_sync"
         echo "Dotfiles synced successfully!"
@@ -658,11 +747,6 @@ if [ -d "$HOME/dotfiles" ]; then
     if [ $TIME_DIFF -gt 3600 ]; then
         echo "Syncing dotfiles..."
         (cd "$HOME/dotfiles" && git pull --quiet 2>/dev/null)
-
-        # Run sync_claude_commands.sh if it exists
-        if [ -f "$HOME/dotfiles/sync_claude_commands.sh" ]; then
-            "$HOME/dotfiles/sync_claude_commands.sh" >/dev/null 2>&1
-        fi
 
         # Update sync marker
         echo $CURRENT_TIME > "$SYNC_MARKER"

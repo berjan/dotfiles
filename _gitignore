@@ -40,3 +40,7 @@ docs/_build/
 /tags
 /.tags
 /.vs/
+
+# Local machine secrets (never commit)
+.env.local
+.env.secrets
