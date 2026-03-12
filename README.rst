@@ -33,3 +33,48 @@ If you don't like it anymore, there's always the uninstall script.
     cd dotfiles
     ./uninstall.sh
 
+TMUX + MOSH + GHOSTTY CLIPBOARD
+==============================================================================
+
+This setup supports copying from remote tmux sessions to the local macOS
+clipboard (Ghostty) via OSC 52.
+
+Current behavior and notes:
+
+- Direct OSC 52 works over ``mosh``.
+- tmux's default clipboard path can fail over ``mosh`` in some cases.
+- We use a helper script that writes OSC 52 directly to the active tmux
+  client TTY.
+
+Relevant files:
+
+- ``_tmux.conf``
+- ``bin/tmux-osc52-copy``
+- ``_config/ghostty/config``
+
+Required Ghostty settings:
+
+::
+
+    clipboard-read = allow
+    clipboard-write = allow
+
+tmux bindings in copy-mode-vi:
+
+- ``v`` starts selection
+- ``y`` copies selection to local clipboard
+- ``Enter`` copies selection to local clipboard
+- mouse drag release copies selection to local clipboard
+
+Quick test (inside tmux on remote host):
+
+::
+
+    printf '\e]52;c;%s\a' "$(printf 'osc52-test' | base64 | tr -d '\n')"
+
+If paste on macOS does not work:
+
+1. Test OSC 52 outside tmux over mosh.
+2. Confirm tmux config is reloaded: ``prefix + r``.
+3. Verify helper exists and is executable: ``~/dotfiles/bin/tmux-osc52-copy``.
+

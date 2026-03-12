@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Read selection from stdin, encode for OSC 52
+payload="$(base64 | tr -d '\r\n')"
+
+# Resolve the client tty for the active tmux client
+client_tty="$(tmux display-message -p '#{client_tty}' 2>/dev/null || true)"
+
+# Fallback to current tty if tmux did not provide one
+if [[ -z "${client_tty}" ]]; then
+  client_tty="$(tty 2>/dev/null || true)"
+fi
+
+# Emit OSC 52 directly to the client tty (works over mosh where tmux clipboard may fail)
+if [[ -n "${client_tty}" && -w "${client_tty}" ]]; then
+  printf '\033]52;c;%s\a' "${payload}" > "${client_tty}"
+fi
