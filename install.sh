@@ -184,6 +184,14 @@ if [ ! -d "$HOME/.tmux/plugins/tundle" ]; then
     git clone --depth=1 https://github.com/javier-lopez/tundle ~/.tmux/plugins/tundle || true
 fi
 
+# Patch tundle: fix false "Already installed" for empty plugin directories
+_tundle_install="$HOME/.tmux/plugins/tundle/scripts/install_plugins.sh"
+if [ -f "$_tundle_install" ] && ! grep -q 'ls -A' "$_tundle_install"; then
+    sed -i.bak 's|if \[ -d "${TMUX_PLUGIN_MANAGER_PATH}/${_iplugins__plugin_name}/" \];|if [ -d "${TMUX_PLUGIN_MANAGER_PATH}/${_iplugins__plugin_name}/" ] \&\&\
+           [ -n "$(ls -A "${TMUX_PLUGIN_MANAGER_PATH}/${_iplugins__plugin_name}/" 2>/dev/null)" ];|' "$_tundle_install"
+    rm -f "${_tundle_install}.bak"
+fi
+
 if [ "$TMUX" ]; then
     tmux source-file ~/.tmux.conf
     ~/.tmux/plugins/tundle/scripts/install_plugins.sh
