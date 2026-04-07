@@ -159,7 +159,7 @@ else
 fi
 alias ls="ls $LS_OPTIONS"
 alias l='ls -A'
-alias ll='l -l'
+alias ll='l -lt'
 alias qmv='qmv -f do'
 alias push='git pull; git push'
 # Some people might not like this but I find it convenient. It makes find
