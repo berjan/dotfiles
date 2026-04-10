@@ -699,10 +699,9 @@ check-secrets() {
     return $missing
 }
 
-# Create claude alias only if the binary exists
-if [ -f "$HOME/.claude/local/claude" ]; then
-fi
-alias cc="claude --dangerously-skip-permissions"
+# Create CLI aliases only if the binaries exist
+command -v claude >/dev/null 2>&1 && alias cc="claude --dangerously-skip-permissions"
+command -v codex >/dev/null 2>&1 && alias codex="codex --dangerously-bypass-approvals-and-sandbox"
 
 # Toggle wide terminal to prevent URL line wrapping
 _wide_original_cols=""
