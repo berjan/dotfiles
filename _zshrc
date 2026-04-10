@@ -704,6 +704,17 @@ command -v claude >/dev/null 2>&1 && alias cc="claude --dangerously-skip-permiss
 command -v codex >/dev/null 2>&1 && alias codex="codex --dangerously-bypass-approvals-and-sandbox"
 command -v codex >/dev/null 2>&1 && alias cx="codex --dangerously-bypass-approvals-and-sandbox"
 
+# Intercept psql if not installed — suggest Docker alternative
+if ! command -v psql >/dev/null 2>&1; then
+    psql() {
+        echo "psql is not installed locally."
+        echo "Use the Docker service instead, e.g.:"
+        echo "  docker compose exec postgres psql \"\$@\""
+        echo "  docker exec -it <container> psql \"\$@\""
+        return 1
+    }
+fi
+
 # Toggle wide terminal to prevent URL line wrapping
 _wide_original_cols=""
 wide() {
