@@ -80,6 +80,7 @@ fpath=(/usr/local/share/zsh/site-functions/ $fpath)
 # fpath=(${ROOT_DIR}.zsh/site-functions $fpath)
 
 if which pyenv &> /dev/null; then eval "$(pyenv init -)"; fi
+if which direnv &> /dev/null; then eval "$(direnv hook zsh)"; fi
 
 # # Antigen bundles
 # . ${ROOT_DIR}.antigen.zsh
@@ -189,6 +190,8 @@ alias ta='tmux attach -t'
 alias tn='tmux new-session -s'
 alias tk='tmux kill-session -t'
 alias td='tmux detach'
+alias tw='tmux display-message -p "#S:#I.#P"'
+
 alias ssh-copy-id='ssh-copy-id -o ControlPath=none'
 #alias mplayer='open -a MplayerX.App --args '
 
@@ -559,6 +562,73 @@ alias st="git status"
 alias br='git branch'
 alias sdf='sync-dotfiles'
 
+# Jump to a git worktree selected with fzf.
+wt() {
+    if ! command git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+        echo "wt: must be run from inside a git repository" >&2
+        return 1
+    fi
+    if ! command -v fzf >/dev/null 2>&1; then
+        echo "wt: fzf not found" >&2
+        return 1
+    fi
+
+    local selection dir
+    selection="$(
+        command git worktree list --porcelain 2>/dev/null \
+            | awk '
+                function emit() {
+                    if (path == "") {
+                        return
+                    }
+                    if (branch != "") {
+                        label = branch
+                    } else if (detached) {
+                        label = "detached " substr(head, 1, 12)
+                    } else if (bare) {
+                        label = "bare"
+                    } else {
+                        label = substr(head, 1, 12)
+                    }
+                    printf "%s\t%s\n", path, label
+                }
+                /^worktree / {
+                    emit()
+                    path = substr($0, 10)
+                    branch = ""
+                    head = ""
+                    detached = 0
+                    bare = 0
+                    next
+                }
+                /^HEAD / {
+                    head = substr($0, 6)
+                    next
+                }
+                /^branch / {
+                    branch = substr($0, 8)
+                    sub("^refs/heads/", "", branch)
+                    next
+                }
+                /^detached$/ {
+                    detached = 1
+                    next
+                }
+                /^bare$/ {
+                    bare = 1
+                    next
+                }
+                END {
+                    emit()
+                }
+            ' \
+            | fzf --prompt='worktree> ' --height=40% --reverse --no-multi --delimiter=$'\t' --with-nth=2,1
+    )" || return $?
+
+    dir="${selection%%$'\t'*}"
+    [ -n "$dir" ] && cd "$dir"
+}
+
 # alias python="/opt/homebrew/anaconda3/bin/python"
 #alias df="tmux attach || tmux new -s dotfiles 'cd ~/dotfiles; nvim ~/dotfiles/_vimrc' \; \
 
@@ -701,8 +771,173 @@ check-secrets() {
 
 # Create CLI aliases only if the binaries exist
 command -v claude >/dev/null 2>&1 && alias cc="claude --dangerously-skip-permissions"
-command -v codex >/dev/null 2>&1 && alias codex="codex --dangerously-bypass-approvals-and-sandbox"
-command -v codex >/dev/null 2>&1 && alias cx="codex --dangerously-bypass-approvals-and-sandbox"
+if command -v codex >/dev/null 2>&1; then
+    export CODEX_APP_SERVER_URL="${CODEX_APP_SERVER_URL:-ws://127.0.0.1:17650}"
+
+    _codex_app_server_health_url() {
+        local url="${CODEX_APP_SERVER_URL:-ws://127.0.0.1:17650}"
+        url="${url/#ws:/http:}"
+        url="${url/#wss:/https:}"
+        printf "%s/readyz" "${url%/}"
+    }
+
+    _codex_app_server_ready() {
+        command curl -fsS --max-time 0.3 "$(_codex_app_server_health_url)" >/dev/null 2>&1
+    }
+
+    _codex_ensure_app_server() {
+        export CODEX_APP_SERVER_URL="${CODEX_APP_SERVER_URL:-ws://127.0.0.1:17650}"
+        _codex_app_server_ready && return 0
+
+        local codex_home="${CODEX_HOME:-$HOME/.codex}"
+        local log_dir="$codex_home/logs"
+        local log_file="$log_dir/app-server.log"
+        mkdir -p "$log_dir"
+
+        if command -v tmux >/dev/null 2>&1; then
+            local tmux_session="${CODEX_APP_SERVER_TMUX_SESSION:-codex-app-server}"
+            command tmux has-session -t "$tmux_session" 2>/dev/null && command tmux kill-session -t "$tmux_session" 2>/dev/null
+            command tmux new-session -d -s "$tmux_session" "CODEX_HOME=\"$codex_home\" CODEX_APP_SERVER_URL=\"$CODEX_APP_SERVER_URL\" codex app-server --listen \"$CODEX_APP_SERVER_URL\" >> \"$log_file\" 2>&1"
+            echo "$tmux_session" > "$codex_home/app-server.tmux-session"
+        else
+            command nohup codex app-server --listen "$CODEX_APP_SERVER_URL" >> "$log_file" 2>&1 </dev/null &!
+            echo "$!" > "$codex_home/app-server.pid"
+        fi
+
+        local i
+        for i in {1..50}; do
+            _codex_app_server_ready && return 0
+            sleep 0.1
+        done
+
+        echo "codex app-server failed to become ready at $CODEX_APP_SERVER_URL (log: $log_file)" >&2
+        return 1
+    }
+
+    _codex_args_have_cwd() {
+        local arg
+        for arg in "$@"; do
+            case "$arg" in
+                -C|--cd|--cd=*|--cwd|--cwd=*|-C=*)
+                    return 0
+                    ;;
+            esac
+        done
+        return 1
+    }
+
+    _codex_remote() {
+        _codex_ensure_app_server || return $?
+        if _codex_args_have_cwd "$@"; then
+            command codex --dangerously-bypass-approvals-and-sandbox --remote "$CODEX_APP_SERVER_URL" "$@"
+        else
+            command codex --dangerously-bypass-approvals-and-sandbox --remote "$CODEX_APP_SERVER_URL" -C "$PWD" "$@"
+        fi
+    }
+
+    codex() {
+        case "$1" in
+            app-server|remote-control|exec-server|mcp-server|completion|update|login|logout|help|--help|-h|--version|-V)
+                command codex "$@"
+                ;;
+            *)
+                _codex_remote "$@"
+                ;;
+        esac
+    }
+
+    cx() {
+        _codex_remote "$@"
+    }
+
+    cxr() {
+        _codex_remote resume --all "$@"
+    }
+
+    _codex_slug() {
+        local slug
+        slug="$(printf "%s" "$*" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g; s/^-+//; s/-+$//; s/-+/-/g' | cut -c1-64)"
+        printf "%s" "${slug:-work}"
+    }
+
+    _codex_repo_base() {
+        local common_dir
+        common_dir="$(git rev-parse --path-format=absolute --git-common-dir 2>/dev/null)" || return 1
+        dirname "$common_dir"
+    }
+
+    _codex_worktree_ensure() {
+        local name="$1"
+        local base branch worktree_dir
+        branch="$(_codex_slug "$name")"
+        base="$(_codex_repo_base)" || {
+            echo "cxwt must be run from inside a git repository" >&2
+            return 1
+        }
+        worktree_dir="$base/.worktrees/$branch"
+
+        if [ ! -d "$worktree_dir" ]; then
+            (
+                cd "$base" || exit 1
+                git fetch origin main >/dev/null 2>&1 || git fetch origin >/dev/null 2>&1 || true
+                if git show-ref --verify --quiet "refs/heads/$branch"; then
+                    git worktree add "$worktree_dir" "$branch"
+                else
+                    git worktree add -b "$branch" "$worktree_dir" origin/main
+                fi
+            ) || return $?
+        fi
+
+        printf "%s" "$worktree_dir"
+    }
+
+    _codex_worktree_pick() {
+        local base
+        base="$(_codex_repo_base)" || {
+            echo "cxwt must be run from inside a git repository" >&2
+            return 1
+        }
+        if ! command -v fzf >/dev/null 2>&1; then
+            echo "cxwt: fzf not found; pass a branch name explicitly" >&2
+            return 1
+        fi
+
+        local selection
+        selection="$(
+            git -C "$base" worktree list --porcelain 2>/dev/null \
+                | awk '/^worktree /{print substr($0, 10)}' \
+                | awk -v base="$base/.worktrees/" '$0 ~ "^" base {sub(base, ""); print}' \
+                | fzf --prompt='worktree> ' --height=40% --reverse --no-multi
+        )" || return $?
+
+        [ -n "$selection" ] && printf "%s" "$selection"
+    }
+
+    cxwt() {
+        if [ -z "$1" ]; then
+            local picked
+            picked="$(_codex_worktree_pick)" || return $?
+            [ -z "$picked" ] && return 130
+            set -- "$picked"
+        fi
+
+        local worktree_dir
+        worktree_dir="$(_codex_worktree_ensure "$1")" || return $?
+        shift
+        _codex_remote -C "$worktree_dir" "$@"
+    }
+
+    cxdraft() {
+        local summary slug name worktree_dir prompt
+        summary="${*:-new work}"
+        slug="$(_codex_slug "$summary")"
+        name="vf-draft-$(date +%Y%m%d-%H%M%S)-$slug"
+        worktree_dir="$(_codex_worktree_ensure "$name")" || return $?
+        prompt="Create or identify the Fizzy task for this work before making code changes. Once a VF number exists, start the final worktree with cxwt vf-{number}-{short-summary}; do not implement in this draft worktree unless explicitly told to continue here. Task: $summary"
+        _codex_remote -C "$worktree_dir" "$prompt"
+    }
+fi
+
 
 # Add Homebrew libpq client tools (psql, pg_dump, ...) to PATH if installed
 [ -x /opt/homebrew/opt/libpq/bin/psql ] && export PATH="$PATH:/opt/homebrew/opt/libpq/bin"
@@ -782,3 +1017,6 @@ export NODE_OPTIONS="--max-old-space-size=8192"
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+# Scaleway CLI autocomplete initialization.
+if command -v scw >/dev/null 2>&1; then eval "$(scw autocomplete script shell=zsh)"; fi
