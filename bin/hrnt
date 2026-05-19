@@ -1,0 +1,27 @@
+#!/bin/sh
+# Rename the current herdr tab.
+# Usage: hrnt <new-name>
+
+if ! command -v herdr >/dev/null 2>&1; then
+    echo "hrnt: herdr not found on PATH" >&2
+    exit 1
+fi
+
+if [ "$#" -eq 0 ]; then
+    echo "usage: hrnt <new-name>" >&2
+    exit 2
+fi
+
+pane_id="${HERDR_ACTIVE_PANE_ID:-$HERDR_PANE_ID}"
+if [ -z "$pane_id" ]; then
+    echo "hrnt: not inside a herdr pane (HERDR_PANE_ID unset)" >&2
+    exit 1
+fi
+
+tab_id="$(herdr pane get "$pane_id" 2>/dev/null | python3 -c 'import json,sys; print(json.load(sys.stdin)["result"]["pane"]["tab_id"])' 2>/dev/null)"
+if [ -z "$tab_id" ]; then
+    echo "hrnt: could not resolve tab id for pane $pane_id" >&2
+    exit 1
+fi
+
+exec herdr tab rename "$tab_id" "$*"

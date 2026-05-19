@@ -1,0 +1,21 @@
+#!/bin/sh
+# Rename the current herdr pane.
+# Usage: hrnp <new-name>
+
+if ! command -v herdr >/dev/null 2>&1; then
+    echo "hrnp: herdr not found on PATH" >&2
+    exit 1
+fi
+
+if [ "$#" -eq 0 ]; then
+    echo "usage: hrnp <new-name>" >&2
+    exit 2
+fi
+
+pane_id="${HERDR_ACTIVE_PANE_ID:-$HERDR_PANE_ID}"
+if [ -z "$pane_id" ]; then
+    echo "hrnp: not inside a herdr pane (HERDR_PANE_ID unset)" >&2
+    exit 1
+fi
+
+exec herdr pane rename "$pane_id" "$*"
