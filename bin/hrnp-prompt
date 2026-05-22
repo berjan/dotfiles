@@ -1,0 +1,17 @@
+#!/bin/sh
+# Prompt for a name and rename the active herdr agent session (panel + border).
+# Meant to be launched from a herdr `[[keys.command]]` binding with type = "pane".
+# Targets the pane that was focused when the key fired, via HERDR_ACTIVE_PANE_ID
+# (which hrnp prefers), so it works even though this runs in a temporary pane.
+
+if ! command -v herdr >/dev/null 2>&1; then
+    echo "hrnp-prompt: herdr not found on PATH" >&2
+    exit 1
+fi
+
+here=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+
+printf 'rename agent (blank = clear): '
+IFS= read -r name || exit 0
+
+exec "$here/hrnp" "${name:---clear}"

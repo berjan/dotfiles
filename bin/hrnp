@@ -1,6 +1,7 @@
 #!/bin/sh
-# Rename the current herdr pane.
+# Rename the current herdr agent session (updates the agents panel and pane border).
 # Usage: hrnp <new-name>
+#        hrnp --clear     # revert to the detected agent label
 
 if ! command -v herdr >/dev/null 2>&1; then
     echo "hrnp: herdr not found on PATH" >&2
@@ -18,4 +19,4 @@ if [ -z "$pane_id" ]; then
     exit 1
 fi
 
-exec herdr pane rename "$pane_id" "$*"
+exec herdr agent rename "$pane_id" "$*"
