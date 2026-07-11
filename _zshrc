@@ -814,6 +814,46 @@ if command -v codex >/dev/null 2>&1; then
         return 1
     }
 
+    _codex_stop_app_server() {
+        export CODEX_APP_SERVER_URL="${CODEX_APP_SERVER_URL:-ws://127.0.0.1:17650}"
+
+        local codex_home="${CODEX_HOME:-$HOME/.codex}"
+        local tmux_session="${CODEX_APP_SERVER_TMUX_SESSION:-codex-app-server}"
+        local pid_file="$codex_home/app-server.pid"
+        local pid
+
+        if command -v tmux >/dev/null 2>&1 && command tmux has-session -t "$tmux_session" 2>/dev/null; then
+            command tmux kill-session -t "$tmux_session" 2>/dev/null
+        fi
+        command rm -f "$codex_home/app-server.tmux-session"
+
+        if [ -f "$pid_file" ]; then
+            pid="$(cat "$pid_file" 2>/dev/null)"
+            if [ -n "$pid" ]; then
+                command kill "$pid" 2>/dev/null || true
+            fi
+            command rm -f "$pid_file"
+        fi
+
+        if command -v pkill >/dev/null 2>&1; then
+            command pkill -f "codex app-server --listen $CODEX_APP_SERVER_URL" 2>/dev/null || true
+        fi
+
+        local i
+        for i in {1..50}; do
+            _codex_app_server_ready || return 0
+            sleep 0.1
+        done
+
+        echo "codex app-server did not stop at $CODEX_APP_SERVER_URL" >&2
+        return 1
+    }
+
+    _codex_restart_app_server() {
+        _codex_stop_app_server || return $?
+        _codex_ensure_app_server
+    }
+
     _codex_args_have_cwd() {
         local arg
         for arg in "$@"; do
@@ -852,6 +892,10 @@ if command -v codex >/dev/null 2>&1; then
 
     cxr() {
         _codex_remote resume --all "$@"
+    }
+
+    cxrestart() {
+        _codex_restart_app_server
     }
 
     _codex_slug() {
