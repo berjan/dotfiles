@@ -772,10 +772,15 @@ check-secrets() {
 # Create CLI aliases only if the binaries exist
 command -v claude >/dev/null 2>&1 && alias cc="claude --dangerously-skip-permissions"
 if command -v codex >/dev/null 2>&1; then
-    export CODEX_APP_SERVER_URL="${CODEX_APP_SERVER_URL:-ws://127.0.0.1:17650}"
+    _codex_default_app_server_url() {
+        local uid="${EUID:-$(id -u)}"
+        printf "ws://127.0.0.1:%d" $((17650 + uid))
+    }
+
+    export CODEX_APP_SERVER_URL="${CODEX_APP_SERVER_URL:-$(_codex_default_app_server_url)}"
 
     _codex_app_server_health_url() {
-        local url="${CODEX_APP_SERVER_URL:-ws://127.0.0.1:17650}"
+        local url="${CODEX_APP_SERVER_URL:-$(_codex_default_app_server_url)}"
         url="${url/#ws:/http:}"
         url="${url/#wss:/https:}"
         printf "%s/readyz" "${url%/}"
@@ -786,7 +791,7 @@ if command -v codex >/dev/null 2>&1; then
     }
 
     _codex_ensure_app_server() {
-        export CODEX_APP_SERVER_URL="${CODEX_APP_SERVER_URL:-ws://127.0.0.1:17650}"
+        export CODEX_APP_SERVER_URL="${CODEX_APP_SERVER_URL:-$(_codex_default_app_server_url)}"
         _codex_app_server_ready && return 0
 
         local codex_home="${CODEX_HOME:-$HOME/.codex}"
@@ -815,7 +820,7 @@ if command -v codex >/dev/null 2>&1; then
     }
 
     _codex_stop_app_server() {
-        export CODEX_APP_SERVER_URL="${CODEX_APP_SERVER_URL:-ws://127.0.0.1:17650}"
+        export CODEX_APP_SERVER_URL="${CODEX_APP_SERVER_URL:-$(_codex_default_app_server_url)}"
 
         local codex_home="${CODEX_HOME:-$HOME/.codex}"
         local tmux_session="${CODEX_APP_SERVER_TMUX_SESSION:-codex-app-server}"
