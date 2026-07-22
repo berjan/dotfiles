@@ -777,7 +777,25 @@ if command -v codex >/dev/null 2>&1; then
         printf "ws://127.0.0.1:%d" $((17650 + uid))
     }
 
-    export CODEX_APP_SERVER_URL="${CODEX_APP_SERVER_URL:-$(_codex_default_app_server_url)}"
+    _codex_configure_app_server_url() {
+        local default_url="$(_codex_default_app_server_url)"
+
+        if [ -z "${CODEX_APP_SERVER_URL:-}" ] || [ "${CODEX_APP_SERVER_URL:-}" = "$default_url" ]; then
+            export CODEX_APP_SERVER_URL="$default_url"
+            return
+        fi
+
+        case "$CODEX_APP_SERVER_URL" in
+            ws://127.0.0.1:*|http://127.0.0.1:*|ws://localhost:*|http://localhost:*)
+                export CODEX_APP_SERVER_URL="$default_url"
+                ;;
+            *)
+                export CODEX_APP_SERVER_URL
+                ;;
+        esac
+    }
+
+    _codex_configure_app_server_url
 
     _codex_app_server_health_url() {
         local url="${CODEX_APP_SERVER_URL:-$(_codex_default_app_server_url)}"
@@ -791,7 +809,7 @@ if command -v codex >/dev/null 2>&1; then
     }
 
     _codex_ensure_app_server() {
-        export CODEX_APP_SERVER_URL="${CODEX_APP_SERVER_URL:-$(_codex_default_app_server_url)}"
+        _codex_configure_app_server_url
         _codex_app_server_ready && return 0
 
         local codex_home="${CODEX_HOME:-$HOME/.codex}"
@@ -820,7 +838,7 @@ if command -v codex >/dev/null 2>&1; then
     }
 
     _codex_stop_app_server() {
-        export CODEX_APP_SERVER_URL="${CODEX_APP_SERVER_URL:-$(_codex_default_app_server_url)}"
+        _codex_configure_app_server_url
 
         local codex_home="${CODEX_HOME:-$HOME/.codex}"
         local tmux_session="${CODEX_APP_SERVER_TMUX_SESSION:-codex-app-server}"
