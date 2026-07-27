@@ -179,6 +179,10 @@ else
     fi
 fi
 
+# Herdr config
+mkdir -p "$HOME/.config/herdr"
+link "$PWD/_config/herdr/config.toml" "$HOME/.config/herdr/config.toml"
+
 # Tmux setup
 if [ ! -d "$HOME/.tmux/plugins/tundle" ]; then
     git clone --depth=1 https://github.com/javier-lopez/tundle ~/.tmux/plugins/tundle || true

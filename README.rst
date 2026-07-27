@@ -78,3 +78,23 @@ If paste on macOS does not work:
 2. Confirm tmux config is reloaded: ``prefix + r``.
 3. Verify helper exists and is executable: ``~/dotfiles/bin/tmux-osc52-copy``.
 
+HERDR
+==============================================================================
+
+The installer links ``_config/herdr/config.toml`` to
+``~/.config/herdr/config.toml`` and installs the pane-balancing helper in
+``~/bin``.
+
+Key bindings:
+
+- ``backtick`` is the prefix key.
+- ``backtick``, then ``f`` toggles fullscreen for the focused pane.
+- ``backtick``, then ``=`` balances pane sizes without restarting their
+  processes.
+
+After pulling an updated dotfiles checkout, run ``./install.sh``. If a regular
+Herdr config file already exists, use ``./install.sh -r`` to back it up and
+replace it with the dotfiles symlink. Reload a running local server with
+``herdr server reload-config``. For remote attachment, use
+``--remote-keybindings server`` so the remote Herdr config and custom balance
+command are active.

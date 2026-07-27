@@ -1,0 +1,9 @@
+[keys]
+prefix = "backtick"
+zoom = "prefix+f"
+
+[[keys.command]]
+key = "prefix+="
+type = "shell"
+command = "$HOME/bin/herdr-balance-panes"
+description = "balance pane sizes"
