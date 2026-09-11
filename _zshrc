@@ -645,7 +645,15 @@ path+=('/opt/homebrew/anaconda3/bin')
 zstyle ':completion:*:ssh:*' user-hosts off
 zstyle ':completion:*:hosts' hosts off
 
-export PATH="$PATH:$HOME/.local/bin/:/opt/homebrew/bin/"
+# Prefer user-local npm/pipx tools over system installs when present.
+# Keep this portable for shared dotfiles: no user-specific absolute paths.
+if [ -d "$HOME/.local/bin" ]; then
+    path=("$HOME/.local/bin" $path)
+fi
+if [ -d "/opt/homebrew/bin" ]; then
+    path+=('/opt/homebrew/bin')
+fi
+typeset -U path PATH
 # Set the range of UDP ports for Mosh to use
 
 # Function to automatically activate the virtualenv when entering a project directory
@@ -779,6 +787,16 @@ if command -v codex >/dev/null 2>&1; then
     cxr() {
         cx resume --all "$@"
     }
+
+    alias lmedium='cx -m gpt-5.6-luna -c model_reasoning_effort=medium'
+    alias lhigh='cx -m gpt-5.6-luna -c model_reasoning_effort=high'
+    alias lxhigh='cx -m gpt-5.6-luna -c model_reasoning_effort=xhigh'
+    alias amedium='cx -m gpt-6-astra -c model_reasoning_effort=medium'
+    alias ahigh='cx -m gpt-6-astra -c model_reasoning_effort=high'
+    alias axhigh='cx -m gpt-6-astra -c model_reasoning_effort=xhigh'
+    alias smedium='cx -m gpt-5.6-sol -c model_reasoning_effort=medium'
+    alias shigh='cx -m gpt-5.6-sol -c model_reasoning_effort=high'
+    alias sxhigh='cx -m gpt-5.6-sol -c model_reasoning_effort=xhigh'
 fi
 
 
@@ -863,3 +881,18 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 
 # Scaleway CLI autocomplete initialization.
 if command -v scw >/dev/null 2>&1; then eval "$(scw autocomplete script shell=zsh)"; fi
+
+# >>> grok installer >>>
+export PATH="$HOME/.grok/bin:$PATH"
+fpath=(~/.grok/completions/zsh $fpath)
+autoload -Uz compinit && compinit -C
+# <<< grok installer <<<
+export PATH="$HOME/bin:$PATH"
+
+# Knowledge Base MCP token (local loopback)
+if [ -f "$HOME/.config/knowledge-base/env" ]; then
+  set -a
+  # shellcheck disable=SC1091
+  . "$HOME/.config/knowledge-base/env"
+  set +a
+fi

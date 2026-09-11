@@ -45,6 +45,8 @@ _insert_to_path /usr/local/bin
 _insert_to_path /usr/lib/ccache/
 _insert_to_path "$PYENV_ROOT/bin"
 _insert_to_path /usr/local/opt/ccache/libexec
+# Prefer user-local npm/pipx tools over system installs.
+_insert_to_path "$HOME/.local/bin"
 
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH
